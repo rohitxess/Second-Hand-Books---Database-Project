@@ -1,0 +1,84 @@
+create table bookpublisher
+(
+	p_ID varchar(20),
+
+	book_isbn char(20),
+
+	constraint bookpublisher_p_IDbook_isbnPK primary key (p_ID,book_isbn), 						-- Primary Key 
+
+	constraint bookpublisher_pIDFK foreign key (p_ID) references publisher,
+
+	constraint bookpublisher_bookisbnFK1 foreign key (book_isbn) references book on delete cascade
+
+);
+
+
+insert into bookpublisher values('p1','0-9950-5080-5');
+insert into bookpublisher values('p2','0-4468-7091-9');
+insert into bookpublisher values('p3','0-9894-5247-6');
+insert into bookpublisher values('p4','0-6291-1016-6');
+insert into bookpublisher values('p5','0-7966-9070-7');
+insert into bookpublisher values('p6','0-6671-2960-X');
+insert into bookpublisher values('p7','0-4189-1800-7');
+insert into bookpublisher values('p8','0-3078-1657-5');
+insert into bookpublisher values('p9','0-2695-9963-0');
+insert into bookpublisher values('p10','0-8811-2193-2');
+
+insert into bookpublisher values('p11','0-8501-9282-1');
+insert into bookpublisher values('p12','0-1492-1942-3');
+insert into bookpublisher values('p13','0-3783-5036-6');
+insert into bookpublisher values('p14','0-2164-3203-0');
+insert into bookpublisher values('p15','0-5031-8670-8');
+
+insert into bookpublisher values('p16','0-2105-1930-4');
+insert into bookpublisher values('p17','0-5907-7787-4');
+insert into bookpublisher values('p18','0-7473-7058-3');
+insert into bookpublisher values('p19','0-2496-2594-6');
+insert into bookpublisher values('p20','0-8145-5001-0');
+insert into bookpublisher values('p21','0-2795-3476-0');
+
+insert into bookpublisher values('p43','0-6684-3624-7');			
+insert into bookpublisher values('p23','0-3325-7201-3');
+insert into bookpublisher values('p24','0-7409-0378-0'); 
+insert into bookpublisher values('p25','0-4940-1246-3');
+insert into bookpublisher values('p26','0-6653-2909-1');
+
+
+insert into bookpublisher values('p27','0-7795-4022-0');
+insert into bookpublisher values('p28','0-2594-9789-4');
+insert into bookpublisher values('p29','0-5620-9509-8');
+
+insert into bookpublisher values('p30','0-9799-9500-0');
+insert into bookpublisher values('p31','0-8631-3315-0');
+
+insert into bookpublisher values('p32','0-7361-2397-0');
+insert into bookpublisher values('p33','0-1167-0455-1');
+
+insert into bookpublisher values('p34','0-8957-7764-9');
+insert into bookpublisher values('p35','0-9435-9745-5');
+
+insert into bookpublisher values('p36','0-2369-1602-5');
+insert into bookpublisher values('p37','0-1500-4500-3');
+insert into bookpublisher values('p38','0-3674-2857-1');
+insert into bookpublisher values('p39','0-8152-7624-9');
+insert into bookpublisher values('p40','0-4405-4093-3');
+insert into bookpublisher values('p41','0-9731-0053-2');
+insert into bookpublisher values('p42','0-1627-7050-2');
+
+insert into bookpublisher values('p43','0-4405-4093-3');
+insert into bookpublisher values('p44','0-9731-0053-2');
+insert into bookpublisher values('p45','0-1627-7050-2');
+insert into bookpublisher values('p46','0-4405-4093-3');
+insert into bookpublisher values('p47','0-9731-0053-2');
+insert into bookpublisher values('p48','0-1627-7050-2');
+insert into bookpublisher values('p49','0-4405-4093-3');
+insert into bookpublisher values('p50','0-9731-0053-2');
+insert into bookpublisher values('p51','0-1627-7050-2');
+
+insert into bookpublisher values('p30','0-6684-3624-7');
+insert into bookpublisher values('p11','0-3325-7201-3');
+insert into bookpublisher values('p28','0-7409-0378-0');
+insert into bookpublisher values('p3','0-4940-1246-3');
+insert into bookpublisher values('p3','0-6653-2909-1');
+insert into bookpublisher values('p35','0-7795-4022-0');
+

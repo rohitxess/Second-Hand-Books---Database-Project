@@ -1,0 +1,52 @@
+create table bookshop
+(
+	shop_ID varchar(20),
+	book_isbn char(20),
+	
+		
+		constraint bookshopPK primary key (book_isbn,shop_ID),
+
+		constraint bookshopFK foreign key (book_isbn) references book,
+
+		constraint bookshopFK1 foreign key (shop_ID) references shop on delete cascade
+
+);
+
+
+insert into bookshop values('shpid4','0-9950-5080-5');
+insert into bookshop values('shpid5','0-4468-7091-9');
+insert into bookshop values('shpid4','0-9894-5247-6');
+insert into bookshop values('shpid11','0-6291-1016-6');
+insert into bookshop values('shpid4','0-7966-9070-7');
+
+insert into bookshop values('shpid15','0-6671-2960-X');
+insert into bookshop values('shpid11','0-9894-5247-6');
+insert into bookshop values('shpid6','0-3078-1657-5');
+insert into bookshop values('shpid15','0-2695-9963-0');
+insert into bookshop values('shpid17','0-2369-1602-5');
+
+insert into bookshop values('shpid19','0-1627-7050-2');
+insert into bookshop values('shpid6','0-9435-9745-5');
+insert into bookshop values('shpid17','0-6653-2909-1');
+insert into bookshop values('shpid19','0-5031-8670-8');
+insert into bookshop values('shpid20','0-9894-5247-6');
+insert into bookshop values('shpid32','0-9731-0053-2');
+insert into bookshop values('shpid30','0-6684-3624-7');
+insert into bookshop values('shpid32','0-7409-0378-0');
+insert into bookshop values('shpid20','0-4940-1246-3');
+insert into bookshop values('shpid32','0-6653-2909-1');
+
+
+insert into bookshop values('shpid4','0-2105-1930-4');
+insert into bookshop values('shpid8','0-5907-7787-4');
+insert into bookshop values('shpid8','0-7473-7058-3');
+insert into bookshop values('shpid8','0-2496-2594-6');
+insert into bookshop values('shpid29','0-8145-5001-0');
+insert into bookshop values('shpid30','0-2795-3476-0');
+
+insert into bookshop values('shpid29','0-7795-4022-0');
+insert into bookshop values('shpid9','0-2594-9789-4');
+insert into bookshop values('shpid20','0-5620-9509-8');
+insert into bookshop values('shpid23','0-9799-9500-0');
+insert into bookshop values('shpid23','0-8631-3315-0');
+

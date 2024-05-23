@@ -1,0 +1,38 @@
+create table bookorder 
+(
+	
+	order_ID varchar(20),
+
+	book_isbn char(20),
+
+		constraint bookorderPK primary key (book_isbn, order_ID),
+
+		constraint bookorderFK foreign key (book_isbn) references book,
+
+		constraint bookorderFK1 foreign key (order_ID) references productorder
+	
+
+);
+
+
+insert into bookorder values('ord1','0-9950-5080-5');
+insert into bookorder values('ord1','0-4468-7091-9');
+insert into bookorder values('ord3','0-9894-5247-6');
+insert into bookorder values('ord4','0-6291-1016-6');
+insert into bookorder values('ord5','0-7966-9070-7');
+insert into bookorder values('ord6','0-6671-2960-X');
+insert into bookorder values('ord7','0-9894-5247-6');
+insert into bookorder values('ord3','0-3078-1657-5');
+insert into bookorder values('ord6','0-2695-9963-0');
+insert into bookorder values('ord10','0-2369-1602-5');
+insert into bookorder values('ord6','0-1627-7050-2');
+insert into bookorder values('ord10','0-9435-9745-5');
+insert into bookorder values('ord1','0-6653-2909-1');
+insert into bookorder values('ord8','0-5031-8670-8');
+insert into bookorder values('ord8','0-9894-5247-6');
+insert into bookorder values('ord8','0-9731-0053-2');
+insert into bookorder values('ord2','0-6684-3624-7');
+insert into bookorder values('ord2','0-7409-0378-0');
+insert into bookorder values('ord4','0-4940-1246-3');
+insert into bookorder values('ord5','0-6653-2909-1');
+
