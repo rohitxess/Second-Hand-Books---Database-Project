@@ -1,0 +1,76 @@
+create table publisher
+(
+	p_ID varchar(20),
+	
+	pname text not null unique,
+
+	constraint publisher_p_IDPK primary key (p_ID), 						-- Primary Key 
+
+	constraint publisher_p_ID check (p_ID like 'p%') 
+
+
+);
+
+
+insert into publisher values('p1','Smith, Elder & Co.');
+insert into publisher values('p2','Harcourt Brace and Company');
+insert into publisher values('p3','Macmillan Publishers');
+insert into publisher values('p4','McClelland & Stewart');
+insert into publisher values('p5','Macmillan Publishers Ltd');
+insert into publisher values('p6','Chapman & Hall');
+insert into publisher values('p7','E. P. Dutton');
+insert into publisher values('p8','Benjamin Motte');
+insert into publisher values('p9','Allen & Unwin');
+insert into publisher values('p10','Verlag Die Schmiede‎-Berlin');
+
+insert into publisher values('p11','Andrews McMeel Publishing');
+insert into publisher values('p12','J.J. Scott');
+insert into publisher values('p13','Andrews McMeel');
+insert into publisher values('p14','Hachette Australia');
+
+
+insert into publisher values('p15','Simon & Schuster');
+insert into publisher values('p16','Doubleday');
+insert into publisher values('p17','Alfred A. Knopf');
+insert into publisher values('p18','Harper Collins Publishers');
+insert into publisher values('p19','Houghton Mifflin');
+
+insert into publisher values('p20','Hogarth Press');
+insert into publisher values('p21','Random House');
+--insert into publisher values('p22',‎'Adam Kepler Books'); 
+insert into publisher values('p23','Villard');
+insert into publisher values('p24','Broadway Books(US)');
+
+
+insert into publisher values('p25','Weidenfeld & Nicolson (UK)');
+insert into publisher values('p26','Harper');
+insert into publisher values('p27','Simon & Schuster (1936)');
+insert into publisher values('p28','Little Brown and Company');
+
+insert into publisher values('p29','Quercus Publishing');
+insert into publisher values('p30','Collins Crime Club');
+
+insert into publisher values('p31','Minotaur Books (August 27, 2019)');
+insert into publisher values('p32','Riverhead Books');
+
+insert into publisher values('p33','Norstedts förlag');
+insert into publisher values('p34','Victor Gollancz');
+insert into publisher values('p35','Crown Publishing Group');
+insert into publisher values('p36','George Newnes');
+insert into publisher values('p37','Viking Adult');
+insert into publisher values('p38','Marvel Enterprises');
+
+insert into publisher values('p39','FBA Powersetup');
+insert into publisher values('p40','Steven Kelloggs');
+insert into publisher values('p41','St. Martins Press');
+insert into publisher values('p42','Dell Publishing');
+insert into publisher values('p43','Poppy Publications');
+insert into publisher values('p44','Houghton Mifflin (US)');
+insert into publisher values('p45','Macmillan');
+insert into publisher values('p46','Oxford University Press');
+insert into publisher values('p47','Addison-Wesley');
+insert into publisher values('p48','Cornerstone');
+insert into publisher values('p49','treadmill-book');
+insert into publisher values('p50','Crown Publications');
+insert into publisher values('p51','Ostozhe & co Publication');
+

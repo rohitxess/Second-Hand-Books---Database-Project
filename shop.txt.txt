@@ -1,0 +1,62 @@
+create table shop
+(
+	shop_ID varchar(20),
+	address varchar(100) not null,
+	stateno integer not null,
+	pincode integer not null,
+	phone_number char(12) not null unique,  
+	shipping text,
+
+		constraint shopPK primary key (shop_ID),							-- Primary Key 
+
+		constraint shop_shipping check ( shipping in ( 'yes' , 'no' ) ),				-- Constraint to check shipping availabilty 
+	
+		constraint store_emp_store_ID check (shop_ID like 'shpid%'),				 	-- constraint for shop id
+
+		constraint shop_stateno check ( (stateno>=1) and (stateno<=29 ) ),				-- Constraint to check the number of states
+
+		constraint shop_phone_number check ( phone_number like ( '9%' ) or phone_number like ( '8%' ) or phone_number like ('7%' ) or phone_number like ('____-_______' ) )			-- To check whether the phone number is starting from the right digit
+);
+
+
+insert into shop values('shpid1','Road No 7 Banjara Hills hydrabad',1, 390018, 7600123458,'yes');
+insert into shop values('shpid2','Plot No 26 Level 1 Industrial Area Phase II',2, 1458545, 9663300001,'no');
+insert into shop values('shpid3','Shankardev Nagar PO Panjabari',3,2487907, 9700055440,'yes');
+insert into shop values('shpid4','Nala Road More Kadamkuan',4,2454321,9500074448,'no');
+
+insert into shop values('shpid5','Shop FF10 First Floor Opposite Bus Stand',5, 9584211, 7000365488,'no');
+insert into shop values('shpid6','210937 Basement Nai Wala',6, 357677, 7654858452,'yes');
+insert into shop values('shpid7','102 Bakor Patel Tower Opp Karelibaug Police Station Opp Karelibaug Police Station',7, 355487, 9878787823,'yes');
+insert into shop values('shpid8','Shop No 31 Old Sanjay Market',8, 789454, 9545877896,'yes');
+insert into shop values('shpid9','Hamirpur H O Hamirpur Opp D C College',9, 2543541, 7000366448,'yes');
+
+insert into shop values('shpid10','Jewel Chowk Vinayak Bazar Ho Near Jewel Cinema Jammu',10, 3010201, 8456416574,'no');
+insert into shop values('shpid11','Doranda RANCHI Near A.G More',11, 3235578, 8563545647,'yes');
+insert into shop values('shpid12','21/14 Azeeema Building Tsp Road Kalasipalyam',12, 586548,9587456547,'no');
+insert into shop values('shpid13','Opp Planetarium Jaffer Khan Colony',13,566854, 8653210014,'no');
+insert into shop values('shpid14','18 Civic Centre Khandelwal Complex Opp Prabhu Vandana Talkies Marhatal',14, 568744, 8000065788,'no');
+insert into shop values('shpid15','Dattatreya Road Near Hindu Samshan Bhoomi Santacruz',15, 2784122, 8540000654,'no');
+
+insert into shop values('shpid16','D.M. Road Imphal Bazar Opposite DM College Science Gate',16, 5456415,7000557799,'yes'); 
+insert into shop values('shpid17','Elibon Marbaniang Building Mawkhar Main Road, Mawkhar',17, 2545647, 7541336699,'no');
+insert into shop values('shpid18','Bara Bazar Dawrpui Aizawl',18, 5876874, 9510213014,'yes');
+insert into shop values('shpid19','City Tower Junction Circular Rd Dimapur',19, 5564857, 8475612300,'yes');
+insert into shop values('shpid20','South Office Para Buxibazar Cuttack',20, 3900210,8745632000,'yes');
+insert into shop values('shpid21','Sco-29 1st Floor Feroze Gandhi Mkt',21, 2454752, 7000888999,'no');
+
+insert into shop values('shpid22','Apeksha Apartment 401-404 Opp Indian Oil Depot Section 11',22, 1284574, 9654000212,'yes');
+insert into shop values('shpid23','Development Area Gangtok HO Gangtok',23, 3000457,7458745621,'no');
+insert into shop values('shpid24','D-29 Indl Estate Ambattur',24, 5656567, 9636363540,'yes');
+insert into shop values('shpid25','Laxmi Plaza Plot No 205c Addagutta Pragathi Nagar Road KPHB Colony Opp Rao E-Techno School',25, 3005478, 8450123647,'no');
+insert into shop values('shpid26','Ram Nagar Akhaura Road Agartala',26, 3000058, 8004477110,'yes');
+insert into shop values('shpid27','24 Addl Sihani Gate Scheme',27, 5665444,9000366600,'yes');
+insert into shop values('shpid28','Block A House No 9 Haridwar Road Dehradun City Lic Building Dehradun',28, 3214657, 9800022447,'no');
+insert into shop values('shpid29','Block-c 24 Bangur Avenue Bangur',29, 214857,7600066454,'yes');
+
+insert into shop values('shpid30','Collage SqureArunodaya Colony Angul Stand Cuttack',20,3000187, 7456321000,'no');
+insert into shop values('shpid31','Sadar Bazar Raipur-Chhattisgarh',5, 2465455, 7884455889,'no');
+insert into shop values('shpid32','54 Site No 42 Kalka Complex Dda Lsc 1st Floor Kalkaji',6, 565986, 9865656565,'yes');
+insert into shop values('shpid33','Sadar Bazar Raipur-Chhattisgarh',5, 2465455,7884405889,'yes');
+insert into shop values('shpid34','8/6 B Parakala Mutt 8/6 bparakalamutt tankbundrdblr-9 Opp Bus Stand',12, 689545, 7545987456,'no');
+insert into shop values('shpid35','F-40Rasila Bhawan Rehari Colony Road Rehari Near Rehidi Chungi Grudwara',10, 3265044, 9545485677,'yes');
+

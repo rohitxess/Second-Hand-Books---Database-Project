@@ -1,0 +1,125 @@
+create table store_emp
+(
+
+	emp_ID varchar(20), 												-- primary key on delete restrict
+	empname varchar(50) not null ,
+	designation varchar(20) not null,
+	address varchar(100) not null,												
+	phone_number char(12) unique,
+	shop_ID varchar(20),
+
+		constraint store_empPK primary key (emp_ID),
+
+		constraint store_empFK1 foreign key(shop_ID) references shop on delete cascade,
+
+		constraint store_emp_emp_ID check (emp_ID like 'empid%'), 				 		-- constraint for employee id
+
+		constraint store_emp_designation check( 
+			designation in ( 'Owner',											-- Owner of the Shop
+					 'Cashier',											-- Employee which handles the cash counter
+					 'Partner',											-- Partner with Owner
+					 'Manager',											-- Employees designated for cleaning
+				         'Front-BD',     										-- Employees dealing with coustomers
+					 'Back-BD')),											-- Employees handling books in the warehouse 
+					  
+
+		constraint customer_phone_number check ( phone_number like ( '9%' ) or phone_number like ( '8%' ) or phone_number like ('7%' ) or phone_number like ('____-_______' ) )			-- To check whether the phone number is starting from the right digit
+);
+
+
+insert into store_emp values('empid1','Annika Bone','Owner','250 Jatia Kahilipara', '9150908412','shpid1');
+insert into store_emp values('empid2','Elliot Torres','Cashier','5B, Subansiri Apartments Block A Government Press Road Bamunimaidam Guwahati', '9153922146','shpid2');
+insert into store_emp values('empid3','Tina Lynch','Manager','Tower-C 3rd Floor DLF IT Park', '9153922223','shpid3');
+insert into store_emp values('empid4','Jax Halliday','Partner','Plot No 430A Industrial Area Phase II', '9209426723','shpid2');
+insert into store_emp values('empid5','Leonie Zhang','Front-BD','Plot No F-7 Industrial Area Phase 8', '9150908454','shpid3');
+insert into store_emp values('empid6','Raveena Frank','Back-BD','Bsd Meera Talkies Khairtabad', '9153922123','shpid4');
+
+insert into store_emp values('empid7','Judy Leal','Owner','10-3-291/b7 Vijaynagar Colony', '9153922254','shpid5');
+insert into store_emp values('empid8','Ciara Olsen','Cashier','11-5-415/b Redhills','92094267312','shpid6');
+insert into store_emp values('empid9','Shyla Curran','Manager','Street Opp Arya Samaj, Kachiguda', '92094268145','shpid7');
+insert into store_emp values('empid10','Isa Ross','Partner','6b, Sultan Alam Road Tollygunge', '9211972777','shpid8');
+insert into store_emp values('empid11','Andre O Reilly','Front-BD','No. 8 1st Floor Panchanantala Lane Behala', '9211972888','shpid9');
+insert into store_emp values('empid12','Ivor Mcdowell','Back-BD','36/c Alipore Road', '9221012088','shpid10');
+
+insert into store_emp values('empid13','Uwais Cordova','Owner','X-1 8/3 Salt Lake Electronic Complex EP Block Sector V Salt Lake City', '9221012154','shpid11');
+insert into store_emp values('empid14','Cinar Whitehead','Cashier','3d Charu Chandra Avenue Tollygunge', '9231228254','shpid12');
+insert into store_emp values('empid15','Levison Cobb','Manager','20a 1st Floor Lindsay Street New Market', '9231228354','shpid13');
+insert into store_emp values('empid16','Federico Hills','Partner','8/2 Kiron Sankar Roy Road', '9241114387','shpid14');
+insert into store_emp values('empid17','Kiara Fitzpatrick','Front-BD','31 Ground Floor Benfish Towers GN Block Sector-V Salt Lake City', '9241114498','shpid15');
+insert into store_emp values('empid18','Jace Short','Back-BD','9 Old Grand Trunk Road Bally', '9251424378','shpid16');
+
+insert into store_emp values('empid19','Yash Barber','Owner','115 , Rabindra Sarani,liluah, Liluah, kolkata ', '9251424414','shpid17');
+insert into store_emp values('empid20','Alec Austin','Cashier','S 521 Part 2', '9261334800','shpid18');
+insert into store_emp values('empid21','Marlon Rutledge','Manager','D 100 A, Lane 5 Laxmi Nagar', '9261334912','shpid19');
+insert into store_emp values('empid22','Tiana Ahmed','Partner','28 Netaji Subhash Marg', '9264423932','shpid20');
+insert into store_emp values('empid23','Jayson Hardin','Front-BD','24 Mata Road Gurgaon', '9264424033','shpid21');
+insert into store_emp values('empid24','Javan Berry','Back-BD','Pavagadh Bus Stand B/h Jubilee Baug', '9267596144','shpid22');
+
+insert into store_emp values('empid25','Nigel Petty','Owner','305 Aditya Nr Sardar Patel Seva Samaj Mithakhali', '9267596255','shpid23');
+insert into store_emp values('empid26','Alaw Wolf','Cashier','32/b Jashlok Society B/h Deep Chambers Manjalpur', '9280061888','shpid24');
+insert into store_emp values('empid27','Dimitri Head','Manager','136 1st Fl 136 1st Floor Windsor Plaza R.c.dutt Road Alkapuri R.c.dutt Road', '9280061984','shpid25');
+insert into store_emp values('empid28','Logan Greene','Partner','Booth No 158 Market Faridabad', '9281439645','shpid26');
+insert into store_emp values('empid29','Kurtis Drew','Front-BD','54 1st Floor Neelam Flyover', '9281439721','shpid27');
+insert into store_emp values('empid30','Saad Gilmore','Back-BD','G 7 Sco1 Nr Hdfc Bank Sector 16, Faridabad', '9283585445','shpid28');
+
+insert into store_emp values('empid31','Jana Pollard','Owner','Phase 4 Chakkarpur Dlf City', '9283585554','shpid29');
+insert into store_emp values('empid32','Roseanna Boone','Cashier','23/2 C P S House Ulsoor Road Ulsoor', '9299838554','shpid30');
+insert into store_emp values('empid33','Fenton Kane','Manager','160/10 Kanteerava Studio Main Road Parimalanagar', '9299838645','shpid31');
+insert into store_emp values('empid34','Sultan Stout','Partner','32/2 Chamarajpet', '9310117054','shpid32');
+insert into store_emp values('empid35','Rima Bull','Front-BD','2884 Kodihalli New Market', '9310117154','shpid33');
+insert into store_emp values('empid36','Samirah Wynn','Back-BD','343 Town Railway Rd Hill View', '9311244554','shpid34');
+insert into store_emp values('empid37','Laura Estrada','Owner','Opp Federal Bank AM Road', '9311244647','shpid35');
+insert into store_emp values('empid38','Faisal Rawlings','Cashier','Opp Ksrtc Bus Station', '9314024777','shpid35');
+insert into store_emp values('empid39','Tonisha Doherty','Manager','No 18 Mission Street (North) near Preumal Koin Street', '9314024800','shpid34');
+insert into store_emp values('empid40','Shayaan Hardy','Partner','Race Course Road', '9314781311','shpid33');
+insert into store_emp values('empid41','Isabella Kay','Front-BD','102 Truck Parking AB Rd Nr Ckd Dhaba Dewas Naka', '9314781411','shpid32');
+insert into store_emp values('empid42','Isobella Power','Back-BD','16 Amar Stambh Zone-I MP Nagar', '9317221112','shpid31');
+
+insert into store_emp values('empid43','Milana Mullen','Owner','504 Highprofile Sgc Vikram Tower', '9317221221','shpid30');
+insert into store_emp values('empid44','Caolan Logan','Cashier','1 St Flr Rm No 23 M M Mishra Bldg Old Nagardas Rd Opp Hotel Hanuman Andheri (west)', '9319363032','shpid29');
+insert into store_emp values('empid45','Vanesa Lawrence','Manager','210 Sterling Centre 210 Sterling Centre Opp.arora Tower m.g Road', '9150508412','shpid28');
+insert into store_emp values('empid46','Nabeela Wickens','Partner','3rd Floor 404 A A Waghwadi Kalbadevi Road, Kalbadevi', '9326381221','shpid27');
+insert into store_emp values('empid47','Shana Thompson','Front-BD','New Islam Mills Cmpd Currey Road Lalbaug', '9326381321','shpid26');
+insert into store_emp values('empid48','Nile Foreman','Back-BD','Goal Bagh', '9327202956','shpid25');
+
+insert into store_emp values('empid49','Dannielle Finch','Owner','485 Model Town Nr LIC Kapurthala', '9327203077','shpid24');
+insert into store_emp values('empid50','Zaynab Proctor','Cashier','1st Floor LIG-684 Housing Board Colony Sector-3 Ranjit Avenue', '9328707188','shpid23');
+insert into store_emp values('empid51','Kit Gonzalez','Manager','78-M South City', '9328002598','shpid22');
+insert into store_emp values('empid52','Bertie Griffiths','Partner','Okay PLUS House Kiran Path Suraj Nagar West Civil Lines', '9328002699','shpid21');
+insert into store_emp values('empid53','Susanna Munoz','Front-BD','E-194 RIICO Industrial Area Mansarovar', '9328707288','shpid20');
+insert into store_emp values('empid54','Ava-Rose Bate','Back-BD','Near Jain Temple Osian', '9331505277','shpid19');
+
+insert into store_emp values('empid55','Igor Garcia','Owner','Pal Link Road', '9331505345','shpid18');
+insert into store_emp values('empid56','Kodi Butt','Cashier','17 Trivellian Basi St Sowcarpet', '9332351955','shpid17');
+insert into store_emp values('empid57','Dolores Lawson','Manager','9/430 Anna Ngr Main Road N S K Nagar', '9332352054','shpid16');
+insert into store_emp values('empid58','Cody Joyner','Partner','33, Halls Road, 9-a Santhosh Co-op Housing Apt Egmore', '9337532758','shpid15');
+insert into store_emp values('empid59','Nabila Ramirez','Front-BD','717 Mount Road Anna Salai', '9337532855','shpid14');
+insert into store_emp values('empid60','Jason Ellis','Back-BD','29 Additional Sihani Ga', '9341735422','shpid13');
+
+insert into store_emp values('empid61','Nabilah Pearson','Owner','A 11 Sector 9', '9341735500','shpid12');
+insert into store_emp values('empid62','Ziggy Wright','Cashier','A 109 Sector 5', '9344625122','shpid11');
+insert into store_emp values('empid63','Dylan Medrano','Manager','304 Sector 18 Krishna Apra Plaza', '9344625211','shpid10');
+insert into store_emp values('empid64','Dev Mcghee','Partner','House Number 2 DAS Colony Kidwaipuri Near Thakur Prasad Community Hall', '9345288912','shpid9');
+insert into store_emp values('empid65','Eben Mckeown','Front-BD','House Number 350 Maurya Colony Gay Ghat Link Road Gulzarbagh, ', '9345289044','shpid8');
+
+insert into store_emp values('empid66','Abbigail Nelson','Owner','Riddhi Siddhi Complex Patliputra Path Rajendranagar,', '9349531988','shpid7');
+insert into store_emp values('empid67','Mila Carpenter','Cashier','Banstal, Raipur G E Road Station Road', '9349532044','shpid6');
+insert into store_emp values('empid68','Marwan Wilde','Manager','Satti Bazaar Sadar Bazar', '9356377577','shpid5');
+insert into store_emp values('empid69','Rio Lam','Partner','Sadar Bazar Raipur', '9356377674','shpid4');
+insert into store_emp values('empid70','Olly Stewart','Front-BD','Main Bazar Jaure Amb Hamirpur Near Govt School', '9357530854','shpid3');
+
+insert into store_emp values('empid71','Damon Valenzuela','Owner','Bijhari Hamirpur Saloni Road', '9357530955','shpid2');
+insert into store_emp values('empid72','Huzaifa Mill','Cashier','Anu Road Hamirpur H O Ghandi Chowk', '9358536154','shpid1');
+insert into store_emp values('empid73','Guto Cotton','Manager','Lalpur Road Circular Road Near Silver Spoon Ranchi', '9358536244','shpid10');
+insert into store_emp values('empid74','Ines Bowen','Partner','2nd Floor Nucleus Colony Circular Road Lalpur Near Womens College Ranchi ', '9360720511','shpid9');
+insert into store_emp values('empid75','Eloisa Morton','Front-BD','Ground Floor Good Building Main Road', '9360720611','shpid8');
+insert into store_emp values('empid76','Nour Poole','Back-BD','Stadium Road Imphal HO Opposite Bus Parking, Imphal', '9362124133','shpid7');
+
+insert into store_emp values('empid77','Kiki Mohammed','Cashier','5B Bookline Western Pologround Thangal Bazar', '9362124233','shpid2');
+insert into store_emp values('empid78','Shreya Anthony','Cashier','Kwakeithel Bazar', '9363134033','shpid6');
+insert into store_emp values('empid79','Lloyd Coombes','Manager','Beautiful Books Building Nongrimbah Laitumkhrah', '9363134133','shpid5');
+insert into store_emp values('empid80','Zachery Craig','Partner','O B Shopping Mall Police Bazar', '9365051233','shpid4');
+insert into store_emp values('empid81','Aleksander Mcdonald','Front-BD','Shillong Auxiliary Jaiaw', '9365051333','shpid3');
+insert into store_emp values('empid82','Iyla Rhodes','Back-BD','Zarkawt Main Street Dawrpui', '9365620033','shpid2');
+insert into store_emp values('empid83','Beck Lord','Back-BD','Chanmari Presbyterian Church Chandmary Main Street Chandmari', '9365620130','shpid1');
+

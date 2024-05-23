@@ -1,0 +1,885 @@
+											-- HIGH DISTINCTION 1ST SEMESTER(SPRING) 2019
+
+
+--NAME: ROHIT XESS
+--EMAIL: Rohit.Xess@student.uts.edu.au
+--STUDENT NUMBER: 13677238
+
+--  This database is about the best selling books which can only be bought in India.
+
+--  Shops have many employees respectively from their city/state.
+--  The shops contain many books which can be bought by the people.
+--  Shops have employess with different designation such as: Owner, Cashier, Partner, Manager
+--  Front-BD(Person who interacts one to one with customer), Back-BD(Person who handles the whole books or Person working in warehouse) 
+--  There are many shops in a state. Alogether there are 29 states
+--  The names of the states are:
+--  State 1 : Andhra Pradesh, State 2 : Arunchal Pradesh, State 3 : Assam, State 4 :Bihar 
+--  State 5 :Chattisgarh, State, 6 : Goa, State 7 : Gujrat, State 8 :Haryana, State 9 : Himachal Pradesh 
+--  State 10 :Jammu and kashmir, State 11 :Jharkhand, State 12 :Karnataka, State 13 :Kerala State 
+--  State 14 :Madhya Pradesh, State 15 :Maharashtra, State 16 : Manipur, State 17 : Meghalaya
+--  State 18 :Mizoram, State 19 :Nagaland, State 20 :Odisha, State 21 :Punjab, State 22 :Rajasthan 
+--  State 23 :Skikkim, State 24 :Tamil Nadu, State 25 :Telangana, State 26 :Tripura 
+--  State 27 :Uttar Pradesh, State 28 :Uttarakhand, State 29 :West Bengal 
+
+--  The people can buy books online as well as offile by visiting the shop personally; according to their convenience.
+--  There are all toghther 29 states from where the people can buy books.
+--  There is no limitation on the number of books that can be purchased.
+
+
+drop view customerpurchase CASCADE;
+drop view manybookauthor CASCADE;
+
+drop table customer cascade;
+drop table shop cascade;
+drop table book cascade;
+drop table bookshop cascade;
+drop table store_emp cascade;
+drop table productorder cascade;
+drop table bookorder cascade;
+drop table author cascade;
+drop table publisher cascade;
+drop table bookauthor cascade;
+drop table bookpublisher cascade;
+
+create table customer 
+(
+	login_ID varchar(20), 
+	name varchar(50) not null ,
+	email_ID varchar(50) not null unique,
+	age integer,
+	address varchar(100) not null,
+	stateno integer not null,
+	pincode integer not null,
+	phone_number char(12) not null unique,
+	
+
+		constraint customerPK primary key (login_ID),								-- Primary Key
+
+		constraint customer_login_ID check (login_ID like 'clog%'),
+
+		constraint customer_age check ( (age>=8) and (age<122) ),						-- Longest living persons age is 122	
+
+		constraint customer_email_ID check ( email_ID like ('%@%.%') ),						-- To check valid email
+
+		constraint customer_stateno check ( (stateno >= 1 ) and (stateno <=29 ) ),				-- To check the number of states in India
+
+		constraint customer_phone_number check ( phone_number like ( '9%' ) or phone_number like ( '8%' ) or phone_number like ('7%' ) or phone_number like ('____-_______' ) )			-- To check whether the phone number is starting from the right digit
+);
+
+
+
+create table shop
+(
+	shop_ID varchar(20),
+	address varchar(100) not null,
+	stateno integer not null,
+	pincode integer not null,
+	phone_number char(12) not null unique,  
+	shipping text,
+
+		constraint shopPK primary key (shop_ID),							-- Primary Key 
+
+		constraint shop_shipping check ( shipping in ( 'yes' , 'no' ) ),				-- Constraint to check shipping availabilty 
+	
+		constraint store_emp_store_ID check (shop_ID like 'shpid%'),				 	-- constraint for shop id
+
+		constraint shop_stateno check ( (stateno>=1) and (stateno<=29 ) ),				-- Constraint to check the number of states
+
+		constraint shop_phone_number check ( phone_number like ( '9%' ) or phone_number like ( '8%' ) or phone_number like ('7%' ) or phone_number like ('____-_______' ) )			-- To check whether the phone number is starting from the right digit
+);
+
+create table book 
+(
+
+	book_isbn char(20) not null,			-- Primary Key, Foreign Key 
+	book_name text not null,	
+	category varchar(20),
+	bestselleryear integer,				-- default entry for bestselleryear will be NULL no need to set it to null
+	edition varchar(20) default 'Not Available' ,
+	discount text,
+
+		constraint bookPK primary key (book_isbn),
+
+		constraint book_category check(		
+		      		category in ( 'Fiction',	
+					       'Poetry',
+						'Non Fictional',
+						'Mystery',
+						'Comic',
+						'Fairy Tale',
+						'Thriller',
+						'Fantasy',
+						'Adventure',
+						'Crime' , 'history', 'Geography', 'Mathematics', 'Biology', 'Science', 'Computer Science')),										-- Categories of books available in shops 
+
+	
+		constraint book_bestselleryear check ( (bestselleryear>=1900) and (bestselleryear<=2019)),				-- Constraint to check the best seller year  /* bestselleryear between 1990 and 2019 */
+
+		constraint book_edition check ( edition in (2,3,4) or ( ( edition = 'Oldest' ) or ( edition = 'Latest') ) ),		-- Constraint to check the edition of the book
+
+		constraint book_discount check ( discount in ( 'yes' , 'no') ) 							-- Constraint for checking the avilablity of discount
+);
+
+
+create table bookshop
+(
+	shop_ID varchar(20),
+	book_isbn char(20),
+	
+		
+		constraint bookshopPK primary key (book_isbn,shop_ID),
+
+		constraint bookshopFK foreign key (book_isbn) references book,
+
+		constraint bookshopFK1 foreign key (shop_ID) references shop on delete cascade
+
+);
+
+
+
+create table store_emp
+(
+
+	emp_ID varchar(20), 												-- primary key on delete restrict
+	empname varchar(50) not null ,
+	designation varchar(20) not null,
+	address varchar(100) not null,												
+	phone_number char(12) unique,
+	shop_ID varchar(20),
+
+		constraint store_empPK primary key (emp_ID),
+
+		constraint store_empFK1 foreign key(shop_ID) references shop on delete cascade,
+
+		constraint store_emp_emp_ID check (emp_ID like 'empid%'), 				 		-- constraint for employee id
+
+		constraint store_emp_designation check( 
+			designation in ( 'Owner',											-- Owner of the Shop
+					 'Cashier',											-- Employee which handles the cash counter
+					 'Partner',											-- Partner with Owner
+					 'Manager',											-- Employees designated for cleaning
+				         'Front-BD',     										-- Employees dealing with coustomers
+					 'Back-BD')),											-- Employees handling books in the warehouse 
+					  
+
+		constraint customer_phone_number check ( phone_number like ( '9%' ) or phone_number like ( '8%' ) or phone_number like ('7%' ) or phone_number like ('____-_______' ) )			-- To check whether the phone number is starting from the right digit
+);
+
+
+
+
+
+
+create table productorder
+(
+	order_ID varchar(20),		 								-- primary key
+	total_price decimal(10,2) not null,										 
+	purchase_date date,
+	login_ID varchar(20), 
+
+		constraint ordrPK primary key (order_ID),
+
+		constraint ordrFK foreign key (login_ID) references customer on delete restrict
+
+
+);
+
+create table bookorder 
+(
+	
+	order_ID varchar(20),
+
+	book_isbn char(20),
+
+		constraint bookorderPK primary key (book_isbn, order_ID),
+
+		constraint bookorderFK foreign key (book_isbn) references book,
+
+		constraint bookorderFK1 foreign key (order_ID) references productorder
+	
+
+);
+
+
+create table author
+(
+	a_ID varchar(20),
+	
+	authorname text not null unique,
+
+	constraint author_aIDPK primary key (a_ID), 					-- Primary Key 
+
+	constraint author_a_ID check (a_ID like 'au%')
+
+);
+
+
+
+create table bookauthor
+(
+
+	a_ID varchar(20),
+
+	book_isbn char(20),
+
+	constraint bookauthor_aIDbookPK primary key (a_ID,book_isbn),	 					-- Primary Key 
+
+	constraint bookauthor_a_IDFK foreign key (a_ID) references author,
+
+	constraint bookauthor_book_isbnFK1 foreign key (book_isbn) references book on delete cascade
+
+);
+
+
+
+create table publisher
+(
+	p_ID varchar(20),
+	
+	pname text not null unique,
+
+	constraint publisher_p_IDPK primary key (p_ID), 						-- Primary Key 
+
+	constraint publisher_p_ID check (p_ID like 'p%') 
+
+
+);
+
+
+
+create table bookpublisher
+(
+	p_ID varchar(20),
+
+	book_isbn char(20),
+
+	constraint bookpublisher_p_IDbook_isbnPK primary key (p_ID,book_isbn), 						-- Primary Key 
+
+	constraint bookpublisher_pIDFK foreign key (p_ID) references publisher,
+
+	constraint bookpublisher_bookisbnFK1 foreign key (book_isbn) references book on delete cascade
+
+);
+
+
+-- View for Customer clog1 who purchased some books
+
+CREATE VIEW customerpurchase AS
+    SELECT name as Customername, email_ID as CustomerEmail , stateno as CustomerState,
+           order_ID as CustomerOrder, total_price as CustomerPrice
+    FROM customer natural join productorder
+    WHERE login_ID='clog1';
+
+
+-- View for books having more than 1 author
+
+CREATE VIEW manybookauthor AS
+    select book_isbn as BookNumber, count(*) as NumberOfAuthors
+	from author natural join bookauthor group by book_isbn having
+	 count(*)>1 order by count(*);
+
+
+-- 1)Customer Table
+
+
+insert into customer values('clog1', 'Evan Khan', 'prahulshukl@andreay.codes', 10, 'b-12 navkar vaika duplex, waghodiya road, baroda, gujarat' , 7, 390019, '8866173239');
+insert into customer values('clog2', 'Yvonne Mann', 'ds4wdz@extraprofit.ru', 15, 'c-12 pramukhswami township, baroda, gujarat' , 7, 390019, '9979926123');
+insert into customer values('clog3', 'Myla Norris', 'qalirajput9@ekmqkw.com', 22, 'a-51 kalanagi township, kaelibaug, nagpur, maharastra' , 15, 312201, '9601720435');
+insert into customer values('clog4', 'Maaria Sanderson', 'isimodr5@scams.website', 26, 'b-21 baupnagar, mumbai, maharastra' , 6, 312500, '9825045479');
+insert into customer values('clog5', 'Ciaran Joseph', 'xkeklo77ke@empek.tk', 27, 'a-67 thakkarbappa society, gend cicle, noidha, up' , 27, 385200, '7847017871');
+insert into customer values('clog6', 'Kieran Brady', '8takyloverforyob@yandx.icu', 15, 'a-45 udhyog nagar, chandighard, haryana' , 8, 365478, '7600363120');
+insert into customer values('clog7', 'Greta Mccallum', 'ulaithmud@forumedu.ru', 9, 'c-71 sardar estate, bird circle, jaipur, rajasthan' , 22, 365479, '7874516417');
+insert into customer values('clog8', 'Bertha Edmonds', '4sinaruto5h@bai5010.com', 16, 'A-45 wonderland, undera circle, blashpur, chhattisgarh' , 5, 364545, '8564795122');
+insert into customer values('clog9', 'Violet Villarreal', 'pkokopop@bbbb00000.info', 65, 'D-56 jodpurnagar, LNT circle, patna, bihar' , 4, 456785, '9856612487');
+insert into customer values('clog10', 'Duke Britt', 'lgiovanac@n5iny.us', 55, 'C-43 kashmainagri, havmour cicle, sinaga, Jambu and Kashmir' , 10, 978945, '9248754878');
+insert into customer values('clog11', 'Mari Gilbert', 'o8929939h@decography.ru', 45, 'A-76 patelnagar, dairy circle, ranchi, jharkhand' , 11, 578547, '9874564288');
+insert into customer values('clog12', 'Lillie-May Dougherty', 'cabde@online.ru', 29, 'A-54 satadhar society, bapod circle, amitsar, punjab' , 21, 364788, '7845886545');
+insert into customer values('clog13', 'Donald Gallagher', 'ehamza6@gikemart.site', 27, 'D-76 sai flats, uma charrasta, dehradun, uttrakhand' , 28, 395654, '8975461233');
+insert into customer values('clog14', 'Heath Walls', 'bkhaled@dobrychvirta.ru', 63, 'A-85 ganeshnagar, airport circle, kolkata, west bengal' , 29, 364777, '9856765124');
+insert into customer values('clog15', 'Isobelle Barnes', 'bluanaeduarda@vesti.ru', 85, 'D-98 Mahadev society, mahvir circle, bengaluru, karnataka' , 12, 364778, '9854328654');
+insert into customer values('clog16', 'Shannan Salter', 'bluanaeduarda@dedmoroz.ru', 22, 'A-09 Kaan society, devki circle, bhopal, madhya pradesh' , 14, 364779, '9875488756');
+insert into customer values('clog17', 'Christie Field', 'ssubi@doyouneedrenovation.net', 15, 'A-32 united society, varasia, tuli, nagaland ' , 19, 364789, '9578756865');
+insert into customer values('clog18', 'Zayna Rich', 'vnasraalrawig@abbonamenti.gratis', 26, 'D-8 amar society, iti circle, udaipur, tripura' , 26, 364787, '7854542663');
+insert into customer values('clog19', 'Akeem Richards', 'jhamma1919f@storageunits.app', 22, 'F-21 Akbar society, gai circle, chennai, tamil nadu' , 24, 336548, '8754631873');
+insert into customer values('clog20', 'Norah Bryan', 'ubatinsided@revzone.xyz', 67, 'A-44 ajit nagar society, dairyden circle, tenali, andhra pradesh' , 1, 6255754, '7458912365');
+
+
+
+-- 2)Shop Table
+
+
+insert into shop values('shpid1','Road No 7 Banjara Hills hydrabad',1, 390018, 7600123458,'yes');
+insert into shop values('shpid2','Plot No 26 Level 1 Industrial Area Phase II',2, 1458545, 9663300001,'no');
+insert into shop values('shpid3','Shankardev Nagar PO Panjabari',3,2487907, 9700055440,'yes');
+insert into shop values('shpid4','Nala Road More Kadamkuan',4,2454321,9500074448,'no');
+
+insert into shop values('shpid5','Shop FF10 First Floor Opposite Bus Stand',5, 9584211, 7000365488,'no');
+insert into shop values('shpid6','210937 Basement Nai Wala',6, 357677, 7654858452,'yes');
+insert into shop values('shpid7','102 Bakor Patel Tower Opp Karelibaug Police Station Opp Karelibaug Police Station',7, 355487, 9878787823,'yes');
+insert into shop values('shpid8','Shop No 31 Old Sanjay Market',8, 789454, 9545877896,'yes');
+insert into shop values('shpid9','Hamirpur H O Hamirpur Opp D C College',9, 2543541, 7000366448,'yes');
+
+insert into shop values('shpid10','Jewel Chowk Vinayak Bazar Ho Near Jewel Cinema Jammu',10, 3010201, 8456416574,'no');
+insert into shop values('shpid11','Doranda RANCHI Near A.G More',11, 3235578, 8563545647,'yes');
+insert into shop values('shpid12','21/14 Azeeema Building Tsp Road Kalasipalyam',12, 586548,9587456547,'no');
+insert into shop values('shpid13','Opp Planetarium Jaffer Khan Colony',13,566854, 8653210014,'no');
+insert into shop values('shpid14','18 Civic Centre Khandelwal Complex Opp Prabhu Vandana Talkies Marhatal',14, 568744, 8000065788,'no');
+insert into shop values('shpid15','Dattatreya Road Near Hindu Samshan Bhoomi Santacruz',15, 2784122, 8540000654,'no');
+
+insert into shop values('shpid16','D.M. Road Imphal Bazar Opposite DM College Science Gate',16, 5456415,7000557799,'yes'); 
+insert into shop values('shpid17','Elibon Marbaniang Building Mawkhar Main Road, Mawkhar',17, 2545647, 7541336699,'no');
+insert into shop values('shpid18','Bara Bazar Dawrpui Aizawl',18, 5876874, 9510213014,'yes');
+insert into shop values('shpid19','City Tower Junction Circular Rd Dimapur',19, 5564857, 8475612300,'yes');
+insert into shop values('shpid20','South Office Para Buxibazar Cuttack',20, 3900210,8745632000,'yes');
+insert into shop values('shpid21','Sco-29 1st Floor Feroze Gandhi Mkt',21, 2454752, 7000888999,'no');
+
+insert into shop values('shpid22','Apeksha Apartment 401-404 Opp Indian Oil Depot Section 11',22, 1284574, 9654000212,'yes');
+insert into shop values('shpid23','Development Area Gangtok HO Gangtok',23, 3000457,7458745621,'no');
+insert into shop values('shpid24','D-29 Indl Estate Ambattur',24, 5656567, 9636363540,'yes');
+insert into shop values('shpid25','Laxmi Plaza Plot No 205c Addagutta Pragathi Nagar Road KPHB Colony Opp Rao E-Techno School',25, 3005478, 8450123647,'no');
+insert into shop values('shpid26','Ram Nagar Akhaura Road Agartala',26, 3000058, 8004477110,'yes');
+insert into shop values('shpid27','24 Addl Sihani Gate Scheme',27, 5665444,9000366600,'yes');
+insert into shop values('shpid28','Block A House No 9 Haridwar Road Dehradun City Lic Building Dehradun',28, 3214657, 9800022447,'no');
+insert into shop values('shpid29','Block-c 24 Bangur Avenue Bangur',29, 214857,7600066454,'yes');
+
+insert into shop values('shpid30','Collage SqureArunodaya Colony Angul Stand Cuttack',20,3000187, 7456321000,'no');
+insert into shop values('shpid31','Sadar Bazar Raipur-Chhattisgarh',5, 2465455, 7884455889,'no');
+insert into shop values('shpid32','54 Site No 42 Kalka Complex Dda Lsc 1st Floor Kalkaji',6, 565986, 9865656565,'yes');
+insert into shop values('shpid33','Sadar Bazar Raipur-Chhattisgarh',5, 2465455,7884405889,'yes');
+insert into shop values('shpid34','8/6 B Parakala Mutt 8/6 bparakalamutt tankbundrdblr-9 Opp Bus Stand',12, 689545, 7545987456,'no');
+insert into shop values('shpid35','F-40Rasila Bhawan Rehari Colony Road Rehari Near Rehidi Chungi Grudwara',10, 3265044, 9545485677,'yes');
+
+
+
+
+-- 3)Book Table
+
+insert into book values('0-9950-5080-5','Jane Eyre','Fiction',1900, '2', 'yes');
+insert into book values('0-4468-7091-9','Animal Farm ','Fiction',1901, '2', 'yes');
+insert into book values('0-9894-5247-6','Alices Adventures in Wonderland','Fiction',1902, '2', 'yes');
+insert into book values('0-6291-1016-6','the Handmaids Tale','Fiction',1903, '3', 'no');
+insert into book values('0-7966-9070-7','Brave New World','Fiction',1904, '4', 'no');
+insert into book values('0-6671-2960-X','Great Expectations','Fiction',1905, '2', 'yes');
+insert into book values('0-4189-1800-7','The Book of Sand','Fiction',1906, '3', 'no');
+insert into book values('0-3078-1657-5','Gullivers Travels','Fiction',1907, '4', 'yes');
+insert into book values('0-2695-9963-0','The Lord of the Rings','Fiction',1908, '3', 'no');
+insert into book values('0-8811-2193-2','The Trial','Fiction',1909, '4', 'yes');
+
+
+insert into book values('0-8501-9282-1','Milk and honey','Poetry',1910, '3', 'no');
+insert into book values('0-1492-1942-3','Odyssey','Poetry',1911, '4', 'no');
+insert into book values('0-3783-5036-6','The Sun and Her Flowers','Poetry',1912, 'Oldest', 'yes');
+insert into book values('0-2164-3203-0','The Princess Saves Herself in This One','Poetry',1913, 'Oldest', 'yes');
+insert into book values('0-5031-8670-8','Love Her Wild: Poetry','Poetry',1914, 'Oldest', 'yes');
+
+
+insert into book values('0-2105-1930-4','Silent Spring','Non Fictional',2003, 'Oldest', 'yes');
+insert into book values('0-5907-7787-4','A Room of Ones Own','Non Fictional',2004, 'Oldest', 'no');
+insert into book values('0-7473-7058-3','In Cold Blood','Non Fictional',2019, 'Latest', 'yes');
+insert into book values('0-2496-2594-6','Homage to Catalonia','Non Fictional',2008, '2', 'no');
+insert into book values('0-8145-5001-0','Into Thin Air','Non Fictional',2007, '3', 'yes');
+insert into book values('0-2795-3476-0','A Short History of Nearly Everything','Non Fictional',2009, '3', 'no');
+
+
+insert into book values('0-6684-3624-7','The Girl Who Lived Twice','Mystery',1984,'Oldest','yes');
+insert into book values('0-3325-7201-3','Murder on the Orient Express','Mystery',1990, '2', 'yes');
+insert into book values('0-7409-0378-0','A Better Man A Chief Inspector Gamache Novel','Mystery',1973, '3', 'yes');
+insert into book values('0-4940-1246-3','The Girl on the Train','Mystery',1994, 'Latest', 'yes');
+insert into book values('0-6653-2909-1','The Girl with the Dragon Tattoo','Mystery',1934, 'Oldest','yes');
+
+
+insert into book values('0-7795-4022-0','Amazing Spider Man Omnibus Vol 1','Comic',2015,'Latest','no');
+insert into book values('0-2594-9789-4','Grimms','Fairy Tale',2012, '3', 'no');
+insert into book values('0-5620-9509-8','Jack and the Beanstalk','Fairy Tale',2011, 'Latest','yes');
+
+insert into book values('0-9799-9500-0', 'The Silence of the Lambs', 'Thriller' ,2015,'3', 'no');
+insert into book values('0-8631-3315-0', 'Past Tense', 'Thriller' ,2010,'3', 'no');
+
+insert into book values('0-7361-2397-0', 'The Poppy War', 'Fantasy' ,2019,'Latest', 'no');
+insert into book values('0-1167-0455-1', 'The Call of the Wild', 'Adventure' ,2000,'2', 'yes');
+
+insert into book values('0-8957-7764-9', 'Murder and One Mans Fight for Justice', 'Crime', 1999,'2', 'no');
+insert into book values('0-9435-9745-5', 'The Natural History Heist of the Century', 'Crime', 2001,'3', 'no');
+
+insert into book values('0-2369-1602-5','Sapiens A Brief History of Humankind','history',2010,'3','no');
+insert into book values('0-1500-4500-3','The Greatest Espionage Story of the Cold War','history',2013,'Latest','no');
+insert into book values('0-3674-2857-1','A Landscape Appreciation','Geography',2011,'Latest','no');
+insert into book values('0-8152-7624-9','How to Lie with Statistics','Mathematics',2011,'3','yes'); 
+insert into book values('0-4405-4093-3','On the Origin of Species','Biology',2015,'Latest','no'); 
+insert into book values('0-9731-0053-2','A Brief History of Time','Science',2016,'3','yes');
+insert into book values('0-1627-7050-2','The Art of Computer Programming','Computer Science',2018,'Latest','yes');
+
+
+
+-- 4)BookShop 
+
+
+
+insert into bookshop values('shpid4','0-9950-5080-5');
+insert into bookshop values('shpid5','0-4468-7091-9');
+insert into bookshop values('shpid4','0-9894-5247-6');
+insert into bookshop values('shpid11','0-6291-1016-6');
+insert into bookshop values('shpid4','0-7966-9070-7');
+
+insert into bookshop values('shpid15','0-6671-2960-X');
+insert into bookshop values('shpid11','0-9894-5247-6');
+insert into bookshop values('shpid6','0-3078-1657-5');
+insert into bookshop values('shpid15','0-2695-9963-0');
+insert into bookshop values('shpid17','0-2369-1602-5');
+
+insert into bookshop values('shpid19','0-1627-7050-2');
+insert into bookshop values('shpid6','0-9435-9745-5');
+insert into bookshop values('shpid17','0-6653-2909-1');
+insert into bookshop values('shpid19','0-5031-8670-8');
+insert into bookshop values('shpid20','0-9894-5247-6');
+insert into bookshop values('shpid32','0-9731-0053-2');
+insert into bookshop values('shpid30','0-6684-3624-7');
+insert into bookshop values('shpid32','0-7409-0378-0');
+insert into bookshop values('shpid20','0-4940-1246-3');
+insert into bookshop values('shpid32','0-6653-2909-1');
+
+
+insert into bookshop values('shpid4','0-2105-1930-4');
+insert into bookshop values('shpid8','0-5907-7787-4');
+insert into bookshop values('shpid8','0-7473-7058-3');
+insert into bookshop values('shpid8','0-2496-2594-6');
+insert into bookshop values('shpid29','0-8145-5001-0');
+insert into bookshop values('shpid30','0-2795-3476-0');
+
+insert into bookshop values('shpid29','0-7795-4022-0');
+insert into bookshop values('shpid9','0-2594-9789-4');
+insert into bookshop values('shpid20','0-5620-9509-8');
+insert into bookshop values('shpid23','0-9799-9500-0');
+insert into bookshop values('shpid23','0-8631-3315-0');
+
+
+
+
+-- 5)Store Employee
+
+
+
+
+
+insert into store_emp values('empid1','Annika Bone','Owner','250 Jatia Kahilipara', '9150908412','shpid1');
+insert into store_emp values('empid2','Elliot Torres','Cashier','5B, Subansiri Apartments Block A Government Press Road Bamunimaidam Guwahati', '9153922146','shpid2');
+insert into store_emp values('empid3','Tina Lynch','Manager','Tower-C 3rd Floor DLF IT Park', '9153922223','shpid3');
+insert into store_emp values('empid4','Jax Halliday','Partner','Plot No 430A Industrial Area Phase II', '9209426723','shpid2');
+insert into store_emp values('empid5','Leonie Zhang','Front-BD','Plot No F-7 Industrial Area Phase 8', '9150908454','shpid3');
+insert into store_emp values('empid6','Raveena Frank','Back-BD','Bsd Meera Talkies Khairtabad', '9153922123','shpid4');
+
+insert into store_emp values('empid7','Judy Leal','Owner','10-3-291/b7 Vijaynagar Colony', '9153922254','shpid5');
+insert into store_emp values('empid8','Ciara Olsen','Cashier','11-5-415/b Redhills','92094267312','shpid6');
+insert into store_emp values('empid9','Shyla Curran','Manager','Street Opp Arya Samaj, Kachiguda', '92094268145','shpid7');
+insert into store_emp values('empid10','Isa Ross','Partner','6b, Sultan Alam Road Tollygunge', '9211972777','shpid8');
+insert into store_emp values('empid11','Andre O Reilly','Front-BD','No. 8 1st Floor Panchanantala Lane Behala', '9211972888','shpid9');
+insert into store_emp values('empid12','Ivor Mcdowell','Back-BD','36/c Alipore Road', '9221012088','shpid10');
+
+insert into store_emp values('empid13','Uwais Cordova','Owner','X-1 8/3 Salt Lake Electronic Complex EP Block Sector V Salt Lake City', '9221012154','shpid11');
+insert into store_emp values('empid14','Cinar Whitehead','Cashier','3d Charu Chandra Avenue Tollygunge', '9231228254','shpid12');
+insert into store_emp values('empid15','Levison Cobb','Manager','20a 1st Floor Lindsay Street New Market', '9231228354','shpid13');
+insert into store_emp values('empid16','Federico Hills','Partner','8/2 Kiron Sankar Roy Road', '9241114387','shpid14');
+insert into store_emp values('empid17','Kiara Fitzpatrick','Front-BD','31 Ground Floor Benfish Towers GN Block Sector-V Salt Lake City', '9241114498','shpid15');
+insert into store_emp values('empid18','Jace Short','Back-BD','9 Old Grand Trunk Road Bally', '9251424378','shpid16');
+
+insert into store_emp values('empid19','Yash Barber','Owner','115 , Rabindra Sarani,liluah, Liluah, kolkata ', '9251424414','shpid17');
+insert into store_emp values('empid20','Alec Austin','Cashier','S 521 Part 2', '9261334800','shpid18');
+insert into store_emp values('empid21','Marlon Rutledge','Manager','D 100 A, Lane 5 Laxmi Nagar', '9261334912','shpid19');
+insert into store_emp values('empid22','Tiana Ahmed','Partner','28 Netaji Subhash Marg', '9264423932','shpid20');
+insert into store_emp values('empid23','Jayson Hardin','Front-BD','24 Mata Road Gurgaon', '9264424033','shpid21');
+insert into store_emp values('empid24','Javan Berry','Back-BD','Pavagadh Bus Stand B/h Jubilee Baug', '9267596144','shpid22');
+
+insert into store_emp values('empid25','Nigel Petty','Owner','305 Aditya Nr Sardar Patel Seva Samaj Mithakhali', '9267596255','shpid23');
+insert into store_emp values('empid26','Alaw Wolf','Cashier','32/b Jashlok Society B/h Deep Chambers Manjalpur', '9280061888','shpid24');
+insert into store_emp values('empid27','Dimitri Head','Manager','136 1st Fl 136 1st Floor Windsor Plaza R.c.dutt Road Alkapuri R.c.dutt Road', '9280061984','shpid25');
+insert into store_emp values('empid28','Logan Greene','Partner','Booth No 158 Market Faridabad', '9281439645','shpid26');
+insert into store_emp values('empid29','Kurtis Drew','Front-BD','54 1st Floor Neelam Flyover', '9281439721','shpid27');
+insert into store_emp values('empid30','Saad Gilmore','Back-BD','G 7 Sco1 Nr Hdfc Bank Sector 16, Faridabad', '9283585445','shpid28');
+
+insert into store_emp values('empid31','Jana Pollard','Owner','Phase 4 Chakkarpur Dlf City', '9283585554','shpid29');
+insert into store_emp values('empid32','Roseanna Boone','Cashier','23/2 C P S House Ulsoor Road Ulsoor', '9299838554','shpid30');
+insert into store_emp values('empid33','Fenton Kane','Manager','160/10 Kanteerava Studio Main Road Parimalanagar', '9299838645','shpid31');
+insert into store_emp values('empid34','Sultan Stout','Partner','32/2 Chamarajpet', '9310117054','shpid32');
+insert into store_emp values('empid35','Rima Bull','Front-BD','2884 Kodihalli New Market', '9310117154','shpid33');
+insert into store_emp values('empid36','Samirah Wynn','Back-BD','343 Town Railway Rd Hill View', '9311244554','shpid34');
+insert into store_emp values('empid37','Laura Estrada','Owner','Opp Federal Bank AM Road', '9311244647','shpid35');
+insert into store_emp values('empid38','Faisal Rawlings','Cashier','Opp Ksrtc Bus Station', '9314024777','shpid35');
+insert into store_emp values('empid39','Tonisha Doherty','Manager','No 18 Mission Street (North) near Preumal Koin Street', '9314024800','shpid34');
+insert into store_emp values('empid40','Shayaan Hardy','Partner','Race Course Road', '9314781311','shpid33');
+insert into store_emp values('empid41','Isabella Kay','Front-BD','102 Truck Parking AB Rd Nr Ckd Dhaba Dewas Naka', '9314781411','shpid32');
+insert into store_emp values('empid42','Isobella Power','Back-BD','16 Amar Stambh Zone-I MP Nagar', '9317221112','shpid31');
+
+insert into store_emp values('empid43','Milana Mullen','Owner','504 Highprofile Sgc Vikram Tower', '9317221221','shpid30');
+insert into store_emp values('empid44','Caolan Logan','Cashier','1 St Flr Rm No 23 M M Mishra Bldg Old Nagardas Rd Opp Hotel Hanuman Andheri (west)', '9319363032','shpid29');
+insert into store_emp values('empid45','Vanesa Lawrence','Manager','210 Sterling Centre 210 Sterling Centre Opp.arora Tower m.g Road', '9150508412','shpid28');
+insert into store_emp values('empid46','Nabeela Wickens','Partner','3rd Floor 404 A A Waghwadi Kalbadevi Road, Kalbadevi', '9326381221','shpid27');
+insert into store_emp values('empid47','Shana Thompson','Front-BD','New Islam Mills Cmpd Currey Road Lalbaug', '9326381321','shpid26');
+insert into store_emp values('empid48','Nile Foreman','Back-BD','Goal Bagh', '9327202956','shpid25');
+
+insert into store_emp values('empid49','Dannielle Finch','Owner','485 Model Town Nr LIC Kapurthala', '9327203077','shpid24');
+insert into store_emp values('empid50','Zaynab Proctor','Cashier','1st Floor LIG-684 Housing Board Colony Sector-3 Ranjit Avenue', '9328707188','shpid23');
+insert into store_emp values('empid51','Kit Gonzalez','Manager','78-M South City', '9328002598','shpid22');
+insert into store_emp values('empid52','Bertie Griffiths','Partner','Okay PLUS House Kiran Path Suraj Nagar West Civil Lines', '9328002699','shpid21');
+insert into store_emp values('empid53','Susanna Munoz','Front-BD','E-194 RIICO Industrial Area Mansarovar', '9328707288','shpid20');
+insert into store_emp values('empid54','Ava-Rose Bate','Back-BD','Near Jain Temple Osian', '9331505277','shpid19');
+
+insert into store_emp values('empid55','Igor Garcia','Owner','Pal Link Road', '9331505345','shpid18');
+insert into store_emp values('empid56','Kodi Butt','Cashier','17 Trivellian Basi St Sowcarpet', '9332351955','shpid17');
+insert into store_emp values('empid57','Dolores Lawson','Manager','9/430 Anna Ngr Main Road N S K Nagar', '9332352054','shpid16');
+insert into store_emp values('empid58','Cody Joyner','Partner','33, Halls Road, 9-a Santhosh Co-op Housing Apt Egmore', '9337532758','shpid15');
+insert into store_emp values('empid59','Nabila Ramirez','Front-BD','717 Mount Road Anna Salai', '9337532855','shpid14');
+insert into store_emp values('empid60','Jason Ellis','Back-BD','29 Additional Sihani Ga', '9341735422','shpid13');
+
+insert into store_emp values('empid61','Nabilah Pearson','Owner','A 11 Sector 9', '9341735500','shpid12');
+insert into store_emp values('empid62','Ziggy Wright','Cashier','A 109 Sector 5', '9344625122','shpid11');
+insert into store_emp values('empid63','Dylan Medrano','Manager','304 Sector 18 Krishna Apra Plaza', '9344625211','shpid10');
+insert into store_emp values('empid64','Dev Mcghee','Partner','House Number 2 DAS Colony Kidwaipuri Near Thakur Prasad Community Hall', '9345288912','shpid9');
+insert into store_emp values('empid65','Eben Mckeown','Front-BD','House Number 350 Maurya Colony Gay Ghat Link Road Gulzarbagh, ', '9345289044','shpid8');
+
+insert into store_emp values('empid66','Abbigail Nelson','Owner','Riddhi Siddhi Complex Patliputra Path Rajendranagar,', '9349531988','shpid7');
+insert into store_emp values('empid67','Mila Carpenter','Cashier','Banstal, Raipur G E Road Station Road', '9349532044','shpid6');
+insert into store_emp values('empid68','Marwan Wilde','Manager','Satti Bazaar Sadar Bazar', '9356377577','shpid5');
+insert into store_emp values('empid69','Rio Lam','Partner','Sadar Bazar Raipur', '9356377674','shpid4');
+insert into store_emp values('empid70','Olly Stewart','Front-BD','Main Bazar Jaure Amb Hamirpur Near Govt School', '9357530854','shpid3');
+
+insert into store_emp values('empid71','Damon Valenzuela','Owner','Bijhari Hamirpur Saloni Road', '9357530955','shpid2');
+insert into store_emp values('empid72','Huzaifa Mill','Cashier','Anu Road Hamirpur H O Ghandi Chowk', '9358536154','shpid1');
+insert into store_emp values('empid73','Guto Cotton','Manager','Lalpur Road Circular Road Near Silver Spoon Ranchi', '9358536244','shpid10');
+insert into store_emp values('empid74','Ines Bowen','Partner','2nd Floor Nucleus Colony Circular Road Lalpur Near Womens College Ranchi ', '9360720511','shpid9');
+insert into store_emp values('empid75','Eloisa Morton','Front-BD','Ground Floor Good Building Main Road', '9360720611','shpid8');
+insert into store_emp values('empid76','Nour Poole','Back-BD','Stadium Road Imphal HO Opposite Bus Parking, Imphal', '9362124133','shpid7');
+
+insert into store_emp values('empid77','Kiki Mohammed','Cashier','5B Bookline Western Pologround Thangal Bazar', '9362124233','shpid2');
+insert into store_emp values('empid78','Shreya Anthony','Cashier','Kwakeithel Bazar', '9363134033','shpid6');
+insert into store_emp values('empid79','Lloyd Coombes','Manager','Beautiful Books Building Nongrimbah Laitumkhrah', '9363134133','shpid5');
+insert into store_emp values('empid80','Zachery Craig','Partner','O B Shopping Mall Police Bazar', '9365051233','shpid4');
+insert into store_emp values('empid81','Aleksander Mcdonald','Front-BD','Shillong Auxiliary Jaiaw', '9365051333','shpid3');
+insert into store_emp values('empid82','Iyla Rhodes','Back-BD','Zarkawt Main Street Dawrpui', '9365620033','shpid2');
+insert into store_emp values('empid83','Beck Lord','Back-BD','Chanmari Presbyterian Church Chandmary Main Street Chandmari', '9365620130','shpid1');
+ 
+
+
+
+-- 6)productorder
+
+insert into productorder values('ord1',100,'2019-02-02','clog1');
+insert into productorder values('ord2',500,'2019-05-08-','clog3');
+insert into productorder values('ord3',200,'2019-05-04','clog2');
+insert into productorder values('ord4',1000,'2019-08-07','clog5');
+insert into productorder values('ord5',1200,'2019-09-02','clog6');
+insert into productorder values('ord6',2500,'2019-07-05','clog1');
+insert into productorder values('ord7',3200,'2019-06-07','clog7');
+insert into productorder values('ord8',4500,'2019-03-08','clog8');
+insert into productorder values('ord9',5000,'2019-04-06','clog9');
+insert into productorder values('ord10',3200,'2019-06-09','clog19');
+
+
+-- 7)BookOrder
+
+
+insert into bookorder values('ord1','0-9950-5080-5');
+insert into bookorder values('ord1','0-4468-7091-9');
+insert into bookorder values('ord3','0-9894-5247-6');
+insert into bookorder values('ord4','0-6291-1016-6');
+insert into bookorder values('ord5','0-7966-9070-7');
+insert into bookorder values('ord6','0-6671-2960-X');
+insert into bookorder values('ord7','0-9894-5247-6');
+insert into bookorder values('ord3','0-3078-1657-5');
+insert into bookorder values('ord6','0-2695-9963-0');
+insert into bookorder values('ord10','0-2369-1602-5');
+insert into bookorder values('ord6','0-1627-7050-2');
+insert into bookorder values('ord10','0-9435-9745-5');
+insert into bookorder values('ord1','0-6653-2909-1');
+insert into bookorder values('ord8','0-5031-8670-8');
+insert into bookorder values('ord8','0-9894-5247-6');
+insert into bookorder values('ord8','0-9731-0053-2');
+insert into bookorder values('ord2','0-6684-3624-7');
+insert into bookorder values('ord2','0-7409-0378-0');
+insert into bookorder values('ord4','0-4940-1246-3');
+insert into bookorder values('ord5','0-6653-2909-1');
+
+
+
+-- 8)Author Table
+
+insert into author values('au1','Charlotte Brontë');
+insert into author values('au2','George Orwell');
+insert into author values('au3','Lewis Carroll');
+insert into author values('au4','Margaret Atwood');
+insert into author values('au5','Aldous Huxley');
+insert into author values('au6',' Charles Dickens');
+insert into author values('au7','Jorge Luis Borges');
+insert into author values('au8','Jonathan Swift');
+insert into author values('au9','J. R. R. Tolkien');
+insert into author values('au10','Franz Kafka');
+
+insert into author values('au11','Rupi Kaur');
+insert into author values('au12','Homer');
+insert into author values('au13','Rupi Kaur Kapoor');
+insert into author values('au14','Amanda Lovelace');
+insert into author values('au15','Atticus Poetry');
+
+insert into author values('au16','Courtney Peppernell');
+insert into author values('au17','Dante Alighieri');
+insert into author values('au18','Kahlil Gibran');
+insert into author values('au19','Doubleday');
+insert into author values('au20','Rumi');
+insert into author values('au21','Rachel Carson');
+
+insert into author values('au22','Virginia Woolf');
+insert into author values('au23','Truman Capote');
+--insert into author values('au24',‎'George Orwell'); 
+insert into author values('au25','Jon Krakauer');
+insert into author values('au26','Bill Bryson');
+
+insert into author values('au27','James Watson');
+insert into author values('au28','Yuval Noah Harari');
+insert into author values('au29','Dale Carnegie');
+
+insert into author values('au30','Paul Kalanithi');
+insert into author values('au31','Malcolm Gladwell');
+
+insert into author values('au32','David Lagercrantz');
+insert into author values('au33','Agatha Christie');
+
+insert into author values('au34','Louise Penny');
+insert into author values('au35','Paula Hawkins');
+
+insert into author values('au36','Stieg Larsson');
+insert into author values('au37','Daphne du Maurier');
+insert into author values('au38','Gillian Flynn');
+insert into author values('au39','Arthur Conan Doyle');
+insert into author values('au40','Ruth Ware');
+insert into author values('au41','Tana French');
+insert into author values('au42','Stan Lee');
+
+insert into author values('au43','Jacob Grimm');
+insert into author values('au44','K. Steven');
+insert into author values('au45','Thomas Harris');
+insert into author values('au46','Lee Child');
+insert into author values('au47',' R. F. Kuang');
+insert into author values('au48','Jack London');
+insert into author values('au49','Bill Browder');
+insert into author values('au50','Kirk W. Johnson');
+insert into author values('au51',' Ben Macintyre');
+insert into author values('au52',' Svetlana Alexievich');
+insert into author values('au53','Darrel Hess');
+insert into author values('au54','Wynn Kapit');
+insert into author values('au55','Atlas');
+insert into author values('au56','Darrell Huff');
+insert into author values('au57','Nate Silver');
+insert into author values('au58','Trevor Hastie');
+insert into author values('au59','Charles Darwin');
+insert into author values('au60',' Bruce Alberts');
+insert into author values('au61','Stephen Hawking');
+
+
+
+-- 9)Publisher
+
+
+insert into publisher values('p1','Smith, Elder & Co.');
+insert into publisher values('p2','Harcourt Brace and Company');
+insert into publisher values('p3','Macmillan Publishers');
+insert into publisher values('p4','McClelland & Stewart');
+insert into publisher values('p5','Macmillan Publishers Ltd');
+insert into publisher values('p6','Chapman & Hall');
+insert into publisher values('p7','E. P. Dutton');
+insert into publisher values('p8','Benjamin Motte');
+insert into publisher values('p9','Allen & Unwin');
+insert into publisher values('p10','Verlag Die Schmiede‎-Berlin');
+
+insert into publisher values('p11','Andrews McMeel Publishing');
+insert into publisher values('p12','J.J. Scott');
+insert into publisher values('p13','Andrews McMeel');
+insert into publisher values('p14','Hachette Australia');
+
+
+insert into publisher values('p15','Simon & Schuster');
+insert into publisher values('p16','Doubleday');
+insert into publisher values('p17','Alfred A. Knopf');
+insert into publisher values('p18','Harper Collins Publishers');
+insert into publisher values('p19','Houghton Mifflin');
+
+insert into publisher values('p20','Hogarth Press');
+insert into publisher values('p21','Random House');
+--insert into publisher values('p22',‎'Adam Kepler Books'); 
+insert into publisher values('p23','Villard');
+insert into publisher values('p24','Broadway Books(US)');
+
+
+insert into publisher values('p25','Weidenfeld & Nicolson (UK)');
+insert into publisher values('p26','Harper');
+insert into publisher values('p27','Simon & Schuster (1936)');
+insert into publisher values('p28','Little Brown and Company');
+
+insert into publisher values('p29','Quercus Publishing');
+insert into publisher values('p30','Collins Crime Club');
+
+insert into publisher values('p31','Minotaur Books (August 27, 2019)');
+insert into publisher values('p32','Riverhead Books');
+
+insert into publisher values('p33','Norstedts förlag');
+insert into publisher values('p34','Victor Gollancz');
+insert into publisher values('p35','Crown Publishing Group');
+insert into publisher values('p36','George Newnes');
+insert into publisher values('p37','Viking Adult');
+insert into publisher values('p38','Marvel Enterprises');
+
+insert into publisher values('p39','FBA Powersetup');
+insert into publisher values('p40','Steven Kelloggs');
+insert into publisher values('p41','St. Martins Press');
+insert into publisher values('p42','Dell Publishing');
+insert into publisher values('p43','Poppy Publications');
+insert into publisher values('p44','Houghton Mifflin (US)');
+insert into publisher values('p45','Macmillan');
+insert into publisher values('p46','Oxford University Press');
+insert into publisher values('p47','Addison-Wesley');
+insert into publisher values('p48','Cornerstone');
+insert into publisher values('p49','treadmill-book');
+insert into publisher values('p50','Crown Publications');
+insert into publisher values('p51','Ostozhe & co Publication');
+
+-- 10)Book Author Table
+
+insert into bookauthor values('au1','0-9950-5080-5');
+insert into bookauthor values('au2','0-4468-7091-9');
+insert into bookauthor values('au3','0-9894-5247-6');
+insert into bookauthor values('au4','0-6291-1016-6');
+insert into bookauthor values('au5','0-7966-9070-7');
+insert into bookauthor values('au6','0-6671-2960-X');
+insert into bookauthor values('au7','0-4189-1800-7');
+insert into bookauthor values('au8','0-3078-1657-5');
+insert into bookauthor values('au9','0-2695-9963-0');
+insert into bookauthor values('au10','0-8811-2193-2');
+
+insert into bookauthor values('au11','0-8501-9282-1');
+insert into bookauthor values('au12','0-1492-1942-3');
+insert into bookauthor values('au13','0-3783-5036-6');
+insert into bookauthor values('au14','0-2164-3203-0');
+insert into bookauthor values('au15','0-5031-8670-8');
+
+insert into bookauthor values('au16','0-2105-1930-4');
+insert into bookauthor values('au17','0-5907-7787-4');
+insert into bookauthor values('au18','0-7473-7058-3');
+insert into bookauthor values('au19','0-2496-2594-6');
+insert into bookauthor values('au20','0-8145-5001-0');
+insert into bookauthor values('au21','0-2795-3476-0');
+
+insert into bookauthor values('au22','0-6684-3624-7');
+insert into bookauthor values('au23','0-3325-7201-3');
+--insert into bookauthor values('au24',‎'0-7409-0378-0'); 
+insert into bookauthor values('au25','0-4940-1246-3');
+insert into bookauthor values('au26','0-6653-2909-1');
+
+insert into bookauthor values('au27','0-7795-4022-0');
+insert into bookauthor values('au28','0-2594-9789-4');
+insert into bookauthor values('au29','0-5620-9509-8');
+
+insert into bookauthor values('au30','0-9799-9500-0');
+insert into bookauthor values('au31','0-8631-3315-0');
+
+insert into bookauthor values('au32','0-7361-2397-0');
+insert into bookauthor values('au33','0-1167-0455-1');
+
+insert into bookauthor values('au34','0-8957-7764-9');
+insert into bookauthor values('au35','0-9435-9745-5');
+
+insert into bookauthor values('au36','0-2369-1602-5');
+insert into bookauthor values('au37','0-1500-4500-3');
+insert into bookauthor values('au38','0-3674-2857-1');
+insert into bookauthor values('au39','0-8152-7624-9');
+insert into bookauthor values('au40','0-4405-4093-3');
+insert into bookauthor values('au41','0-9731-0053-2');
+insert into bookauthor values('au42','0-1627-7050-2');
+
+insert into bookauthor values('au43','0-4405-4093-3'); 			-- one book will have many authors		
+insert into bookauthor values('au44','0-9731-0053-2'); 
+insert into bookauthor values('au45','0-1627-7050-2');
+insert into bookauthor values('au46','0-7795-4022-0');
+insert into bookauthor values('au47','0-2594-9789-4');
+insert into bookauthor values('au48','0-5620-9509-8');
+insert into bookauthor values('au49','0-9799-9500-0');
+insert into bookauthor values('au50','0-8631-3315-0');
+insert into bookauthor values('au51','0-1627-7050-2');
+
+insert into bookauthor values('au52','0-7361-2397-0'); 			
+insert into bookauthor values('au53','0-9731-0053-2'); 
+insert into bookauthor values('au54','0-1167-0455-1');
+insert into bookauthor values('au55','0-4405-4093-3');
+insert into bookauthor values('au56','0-9731-0053-2');
+
+
+
+-- 11)Book Publisher
+
+
+insert into bookpublisher values('p1','0-9950-5080-5');
+insert into bookpublisher values('p2','0-4468-7091-9');
+insert into bookpublisher values('p3','0-9894-5247-6');
+insert into bookpublisher values('p4','0-6291-1016-6');
+insert into bookpublisher values('p5','0-7966-9070-7');
+insert into bookpublisher values('p6','0-6671-2960-X');
+insert into bookpublisher values('p7','0-4189-1800-7');
+insert into bookpublisher values('p8','0-3078-1657-5');
+insert into bookpublisher values('p9','0-2695-9963-0');
+insert into bookpublisher values('p10','0-8811-2193-2');
+
+insert into bookpublisher values('p11','0-8501-9282-1');
+insert into bookpublisher values('p12','0-1492-1942-3');
+insert into bookpublisher values('p13','0-3783-5036-6');
+insert into bookpublisher values('p14','0-2164-3203-0');
+insert into bookpublisher values('p15','0-5031-8670-8');
+
+insert into bookpublisher values('p16','0-2105-1930-4');
+insert into bookpublisher values('p17','0-5907-7787-4');
+insert into bookpublisher values('p18','0-7473-7058-3');
+insert into bookpublisher values('p19','0-2496-2594-6');
+insert into bookpublisher values('p20','0-8145-5001-0');
+insert into bookpublisher values('p21','0-2795-3476-0');
+
+insert into bookpublisher values('p43','0-6684-3624-7');			
+insert into bookpublisher values('p23','0-3325-7201-3');
+insert into bookpublisher values('p24','0-7409-0378-0'); 
+insert into bookpublisher values('p25','0-4940-1246-3');
+insert into bookpublisher values('p26','0-6653-2909-1');
+
+
+insert into bookpublisher values('p27','0-7795-4022-0');
+insert into bookpublisher values('p28','0-2594-9789-4');
+insert into bookpublisher values('p29','0-5620-9509-8');
+
+insert into bookpublisher values('p30','0-9799-9500-0');
+insert into bookpublisher values('p31','0-8631-3315-0');
+
+insert into bookpublisher values('p32','0-7361-2397-0');
+insert into bookpublisher values('p33','0-1167-0455-1');
+
+insert into bookpublisher values('p34','0-8957-7764-9');
+insert into bookpublisher values('p35','0-9435-9745-5');
+
+insert into bookpublisher values('p36','0-2369-1602-5');
+insert into bookpublisher values('p37','0-1500-4500-3');
+insert into bookpublisher values('p38','0-3674-2857-1');
+insert into bookpublisher values('p39','0-8152-7624-9');
+insert into bookpublisher values('p40','0-4405-4093-3');
+insert into bookpublisher values('p41','0-9731-0053-2');
+insert into bookpublisher values('p42','0-1627-7050-2');
+
+insert into bookpublisher values('p43','0-4405-4093-3');
+insert into bookpublisher values('p44','0-9731-0053-2');
+insert into bookpublisher values('p45','0-1627-7050-2');
+insert into bookpublisher values('p46','0-4405-4093-3');
+insert into bookpublisher values('p47','0-9731-0053-2');
+insert into bookpublisher values('p48','0-1627-7050-2');
+insert into bookpublisher values('p49','0-4405-4093-3');
+insert into bookpublisher values('p50','0-9731-0053-2');
+insert into bookpublisher values('p51','0-1627-7050-2');
+
+insert into bookpublisher values('p30','0-6684-3624-7');
+insert into bookpublisher values('p11','0-3325-7201-3');
+insert into bookpublisher values('p28','0-7409-0378-0');
+insert into bookpublisher values('p3','0-4940-1246-3');
+insert into bookpublisher values('p3','0-6653-2909-1');
+insert into bookpublisher values('p35','0-7795-4022-0');
+
