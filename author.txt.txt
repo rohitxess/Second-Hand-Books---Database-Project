@@ -1,0 +1,85 @@
+create table author
+(
+	a_ID varchar(20),
+	
+	authorname text not null unique,
+
+	constraint author_aIDPK primary key (a_ID), 					-- Primary Key 
+
+	constraint author_a_ID check (a_ID like 'au%')
+
+);
+
+
+insert into author values('au1','Charlotte Brontë');
+insert into author values('au1','Charlotte Brontë');
+insert into author values('au2','George Orwell');
+insert into author values('au3','Lewis Carroll');
+insert into author values('au4','Margaret Atwood');
+insert into author values('au5','Aldous Huxley');
+insert into author values('au6',' Charles Dickens');
+insert into author values('au7','Jorge Luis Borges');
+insert into author values('au8','Jonathan Swift');
+insert into author values('au9','J. R. R. Tolkien');
+insert into author values('au10','Franz Kafka');
+
+insert into author values('au11','Rupi Kaur');
+insert into author values('au12','Homer');
+insert into author values('au13','Rupi Kaur Kapoor');
+insert into author values('au14','Amanda Lovelace');
+insert into author values('au15','Atticus Poetry');
+
+insert into author values('au16','Courtney Peppernell');
+insert into author values('au17','Dante Alighieri');
+insert into author values('au18','Kahlil Gibran');
+insert into author values('au19','Doubleday');
+insert into author values('au20','Rumi');
+insert into author values('au21','Rachel Carson');
+
+insert into author values('au22','Virginia Woolf');
+insert into author values('au23','Truman Capote');
+--insert into author values('au24',‎'George Orwell'); 
+insert into author values('au25','Jon Krakauer');
+insert into author values('au26','Bill Bryson');
+
+insert into author values('au27','James Watson');
+insert into author values('au28','Yuval Noah Harari');
+insert into author values('au29','Dale Carnegie');
+
+insert into author values('au30','Paul Kalanithi');
+insert into author values('au31','Malcolm Gladwell');
+
+insert into author values('au32','David Lagercrantz');
+insert into author values('au33','Agatha Christie');
+
+insert into author values('au34','Louise Penny');
+insert into author values('au35','Paula Hawkins');
+
+insert into author values('au36','Stieg Larsson');
+insert into author values('au37','Daphne du Maurier');
+insert into author values('au38','Gillian Flynn');
+insert into author values('au39','Arthur Conan Doyle');
+insert into author values('au40','Ruth Ware');
+insert into author values('au41','Tana French');
+insert into author values('au42','Stan Lee');
+
+insert into author values('au43','Jacob Grimm');
+insert into author values('au44','K. Steven');
+insert into author values('au45','Thomas Harris');
+insert into author values('au46','Lee Child');
+insert into author values('au47',' R. F. Kuang');
+insert into author values('au48','Jack London');
+insert into author values('au49','Bill Browder');
+insert into author values('au50','Kirk W. Johnson');
+insert into author values('au51',' Ben Macintyre');
+insert into author values('au52',' Svetlana Alexievich');
+insert into author values('au53','Darrel Hess');
+insert into author values('au54','Wynn Kapit');
+insert into author values('au55','Atlas');
+insert into author values('au56','Darrell Huff');
+insert into author values('au57','Nate Silver');
+insert into author values('au58','Trevor Hastie');
+insert into author values('au59','Charles Darwin');
+insert into author values('au60',' Bruce Alberts');
+insert into author values('au61','Stephen Hawking');
+

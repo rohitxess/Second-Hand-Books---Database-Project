@@ -1,0 +1,89 @@
+create table book 
+(
+
+	book_isbn char(20) not null,			-- Primary Key, Foreign Key 
+	book_name text not null,	
+	category varchar(20),
+	bestselleryear integer,				-- default entry for bestselleryear will be NULL no need to set it to null
+	edition varchar(20) default 'Not Available' ,
+	discount text,
+
+		constraint bookPK primary key (book_isbn),
+
+		constraint book_category check(		
+		      		category in ( 'Fiction',	
+					       'Poetry',
+						'Non Fictional',
+						'Mystery',
+						'Comic',
+						'Fairy Tale',
+						'Thriller',
+						'Fantasy',
+						'Adventure',
+						'Crime' , 'history', 'Geography', 'Mathematics', 'Biology', 'Science', 'Computer Science')),										-- Categories of books available in shops 
+
+	
+		constraint book_bestselleryear check ( (bestselleryear>=1900) and (bestselleryear<=2019)),				-- Constraint to check the best seller year  /* bestselleryear between 1990 and 2019 */
+
+		constraint book_edition check ( edition in (2,3,4) or ( ( edition = 'Oldest' ) or ( edition = 'Latest') ) ),		-- Constraint to check the edition of the book
+
+		constraint book_discount check ( discount in ( 'yes' , 'no') ) 							-- Constraint for checking the avilablity of discount
+);
+
+
+insert into book values('0-9950-5080-5','Jane Eyre','Fiction',1900, '2', 'yes');
+insert into book values('0-4468-7091-9','Animal Farm ','Fiction',1901, '2', 'yes');
+insert into book values('0-9894-5247-6','Alices Adventures in Wonderland','Fiction',1902, '2', 'yes');
+insert into book values('0-6291-1016-6','the Handmaids Tale','Fiction',1903, '3', 'no');
+insert into book values('0-7966-9070-7','Brave New World','Fiction',1904, '4', 'no');
+insert into book values('0-6671-2960-X','Great Expectations','Fiction',1905, '2', 'yes');
+insert into book values('0-4189-1800-7','The Book of Sand','Fiction',1906, '3', 'no');
+insert into book values('0-3078-1657-5','Gullivers Travels','Fiction',1907, '4', 'yes');
+insert into book values('0-2695-9963-0','The Lord of the Rings','Fiction',1908, '3', 'no');
+insert into book values('0-8811-2193-2','The Trial','Fiction',1909, '4', 'yes');
+
+
+insert into book values('0-8501-9282-1','Milk and honey','Poetry',1910, '3', 'no');
+insert into book values('0-1492-1942-3','Odyssey','Poetry',1911, '4', 'no');
+insert into book values('0-3783-5036-6','The Sun and Her Flowers','Poetry',1912, 'Oldest', 'yes');
+insert into book values('0-2164-3203-0','The Princess Saves Herself in This One','Poetry',1913, 'Oldest', 'yes');
+insert into book values('0-5031-8670-8','Love Her Wild: Poetry','Poetry',1914, 'Oldest', 'yes');
+
+
+insert into book values('0-2105-1930-4','Silent Spring','Non Fictional',2003, 'Oldest', 'yes');
+insert into book values('0-5907-7787-4','A Room of Ones Own','Non Fictional',2004, 'Oldest', 'no');
+insert into book values('0-7473-7058-3','In Cold Blood','Non Fictional',2019, 'Latest', 'yes');
+insert into book values('0-2496-2594-6','Homage to Catalonia','Non Fictional',2008, '2', 'no');
+insert into book values('0-8145-5001-0','Into Thin Air','Non Fictional',2007, '3', 'yes');
+insert into book values('0-2795-3476-0','A Short History of Nearly Everything','Non Fictional',2009, '3', 'no');
+
+
+insert into book values('0-6684-3624-7','The Girl Who Lived Twice','Mystery',1984,'Oldest','yes');
+insert into book values('0-3325-7201-3','Murder on the Orient Express','Mystery',1990, '2', 'yes');
+insert into book values('0-7409-0378-0','A Better Man A Chief Inspector Gamache Novel','Mystery',1973, '3', 'yes');
+insert into book values('0-4940-1246-3','The Girl on the Train','Mystery',1994, 'Latest', 'yes');
+insert into book values('0-6653-2909-1','The Girl with the Dragon Tattoo','Mystery',1934, 'Oldest','yes');
+
+
+insert into book values('0-7795-4022-0','Amazing Spider Man Omnibus Vol 1','Comic',2015,'Latest','no');
+insert into book values('0-2594-9789-4','Grimms','Fairy Tale',2012, '3', 'no');
+insert into book values('0-5620-9509-8','Jack and the Beanstalk','Fairy Tale',2011, 'Latest','yes');
+
+insert into book values('0-9799-9500-0', 'The Silence of the Lambs', 'Thriller' ,2015,'3', 'no');
+insert into book values('0-8631-3315-0', 'Past Tense', 'Thriller' ,2010,'3', 'no');
+
+insert into book values('0-7361-2397-0', 'The Poppy War', 'Fantasy' ,2019,'Latest', 'no');
+insert into book values('0-1167-0455-1', 'The Call of the Wild', 'Adventure' ,2000,'2', 'yes');
+
+insert into book values('0-8957-7764-9', 'Murder and One Mans Fight for Justice', 'Crime', 1999,'2', 'no');
+insert into book values('0-9435-9745-5', 'The Natural History Heist of the Century', 'Crime', 2001,'3', 'no');
+
+insert into book values('0-2369-1602-5','Sapiens A Brief History of Humankind','history',2010,'3','no');
+insert into book values('0-1500-4500-3','The Greatest Espionage Story of the Cold War','history',2013,'Latest','no');
+insert into book values('0-3674-2857-1','A Landscape Appreciation','Geography',2011,'Latest','no');
+insert into book values('0-8152-7624-9','How to Lie with Statistics','Mathematics',2011,'3','yes'); 
+insert into book values('0-4405-4093-3','On the Origin of Species','Biology',2015,'Latest','no'); 
+insert into book values('0-9731-0053-2','A Brief History of Time','Science',2016,'3','yes');
+insert into book values('0-1627-7050-2','The Art of Computer Programming','Computer Science',2018,'Latest','yes');
+
+

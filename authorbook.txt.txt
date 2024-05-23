@@ -1,0 +1,83 @@
+create table bookauthor
+(
+
+	a_ID varchar(20),
+
+	book_isbn char(20),
+
+	constraint bookauthor_aIDbookPK primary key (a_ID,book_isbn),	 					-- Primary Key 
+
+	constraint bookauthor_a_IDFK foreign key (a_ID) references author,
+
+	constraint bookauthor_book_isbnFK1 foreign key (book_isbn) references book on delete cascade
+
+);
+
+
+insert into bookauthor values('au1','0-9950-5080-5');
+insert into bookauthor values('au2','0-4468-7091-9');
+insert into bookauthor values('au3','0-9894-5247-6');
+insert into bookauthor values('au4','0-6291-1016-6');
+insert into bookauthor values('au5','0-7966-9070-7');
+insert into bookauthor values('au6','0-6671-2960-X');
+insert into bookauthor values('au7','0-4189-1800-7');
+insert into bookauthor values('au8','0-3078-1657-5');
+insert into bookauthor values('au9','0-2695-9963-0');
+insert into bookauthor values('au10','0-8811-2193-2');
+
+insert into bookauthor values('au11','0-8501-9282-1');
+insert into bookauthor values('au12','0-1492-1942-3');
+insert into bookauthor values('au13','0-3783-5036-6');
+insert into bookauthor values('au14','0-2164-3203-0');
+insert into bookauthor values('au15','0-5031-8670-8');
+
+insert into bookauthor values('au16','0-2105-1930-4');
+insert into bookauthor values('au17','0-5907-7787-4');
+insert into bookauthor values('au18','0-7473-7058-3');
+insert into bookauthor values('au19','0-2496-2594-6');
+insert into bookauthor values('au20','0-8145-5001-0');
+insert into bookauthor values('au21','0-2795-3476-0');
+
+insert into bookauthor values('au22','0-6684-3624-7');
+insert into bookauthor values('au23','0-3325-7201-3');
+--insert into bookauthor values('au24',‎'0-7409-0378-0'); 
+insert into bookauthor values('au25','0-4940-1246-3');
+insert into bookauthor values('au26','0-6653-2909-1');
+
+insert into bookauthor values('au27','0-7795-4022-0');
+insert into bookauthor values('au28','0-2594-9789-4');
+insert into bookauthor values('au29','0-5620-9509-8');
+
+insert into bookauthor values('au30','0-9799-9500-0');
+insert into bookauthor values('au31','0-8631-3315-0');
+
+insert into bookauthor values('au32','0-7361-2397-0');
+insert into bookauthor values('au33','0-1167-0455-1');
+
+insert into bookauthor values('au34','0-8957-7764-9');
+insert into bookauthor values('au35','0-9435-9745-5');
+
+insert into bookauthor values('au36','0-2369-1602-5');
+insert into bookauthor values('au37','0-1500-4500-3');
+insert into bookauthor values('au38','0-3674-2857-1');
+insert into bookauthor values('au39','0-8152-7624-9');
+insert into bookauthor values('au40','0-4405-4093-3');
+insert into bookauthor values('au41','0-9731-0053-2');
+insert into bookauthor values('au42','0-1627-7050-2');
+
+insert into bookauthor values('au43','0-4405-4093-3'); 			-- one book will have many authors		
+insert into bookauthor values('au44','0-9731-0053-2'); 
+insert into bookauthor values('au45','0-1627-7050-2');
+insert into bookauthor values('au46','0-7795-4022-0');
+insert into bookauthor values('au47','0-2594-9789-4');
+insert into bookauthor values('au48','0-5620-9509-8');
+insert into bookauthor values('au49','0-9799-9500-0');
+insert into bookauthor values('au50','0-8631-3315-0');
+insert into bookauthor values('au51','0-1627-7050-2');
+
+insert into bookauthor values('au52','0-7361-2397-0'); 			
+insert into bookauthor values('au53','0-9731-0053-2'); 
+insert into bookauthor values('au54','0-1167-0455-1');
+insert into bookauthor values('au55','0-4405-4093-3');
+insert into bookauthor values('au56','0-9731-0053-2');
+
