@@ -1,0 +1,33 @@
+create table productorder
+(
+	order_ID varchar(20),		 								-- primary key
+	total_price decimal(10,2) not null,										 
+	purchase_date date,
+	login_ID varchar(20), 
+
+		constraint ordrPK primary key (order_ID),
+
+		constraint ordrFK foreign key (login_ID) references customer on delete restrict
+
+
+);
+
+
+
+insert into productorder values('ord1',100,'2019-02-02','clog1');
+insert into productorder values('ord2',500,'2019-05-08-','clog3');
+insert into productorder values('ord3',200,'2019-05-04','clog2');
+insert into productorder values('ord4',1000,'2019-08-07','clog5');
+insert into productorder values('ord5',1200,'2019-09-02','clog6');
+insert into productorder values('ord6',2500,'2019-07-05','clog1');
+insert into productorder values('ord7',3200,'2019-06-07','clog7');
+insert into productorder values('ord8',4500,'2019-03-08','clog8');
+insert into productorder values('ord9',5000,'2019-04-06','clog9');
+insert into productorder values('ord10',3200,'2019-06-09','clog19');
+
+
+
+
+
+
+

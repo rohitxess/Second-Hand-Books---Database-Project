@@ -1,0 +1,48 @@
+create table customer 
+(
+	login_ID varchar(20), 
+	name varchar(50) not null ,
+	email_ID varchar(50) not null unique,
+	age integer,
+	address varchar(100) not null,
+	stateno integer not null,
+	pincode integer not null,
+	phone_number char(12) not null unique,
+	
+
+		constraint customerPK primary key (login_ID),								-- Primary Key
+
+		constraint customer_login_ID check (login_ID like 'clog%'),
+
+		constraint customer_age check ( (age>=8) and (age<122) ),						-- Longest living persons age is 122	
+
+		constraint customer_email_ID check ( email_ID like ('%@%.%') ),						-- To check valid email
+
+		constraint customer_stateno check ( (stateno >= 1 ) and (stateno <=29 ) ),				-- To check the number of states in India
+
+		constraint customer_phone_number check ( phone_number like ( '9%' ) or phone_number like ( '8%' ) or phone_number like ('7%' ) or phone_number like ('____-_______' ) )			-- To check whether the phone number is starting from the right digit
+);
+
+
+
+insert into customer values('clog1', 'Evan Khan', 'prahulshukl@andreay.codes', 10, 'b-12 navkar vaika duplex, waghodiya road, baroda, gujarat' , 7, 390019, '8866173239');
+insert into customer values('clog2', 'Yvonne Mann', 'ds4wdz@extraprofit.ru', 15, 'c-12 pramukhswami township, baroda, gujarat' , 7, 390019, '9979926123');
+insert into customer values('clog3', 'Myla Norris', 'qalirajput9@ekmqkw.com', 22, 'a-51 kalanagi township, kaelibaug, nagpur, maharastra' , 15, 312201, '9601720435');
+insert into customer values('clog4', 'Maaria Sanderson', 'isimodr5@scams.website', 26, 'b-21 baupnagar, mumbai, maharastra' , 6, 312500, '9825045479');
+insert into customer values('clog5', 'Ciaran Joseph', 'xkeklo77ke@empek.tk', 27, 'a-67 thakkarbappa society, gend cicle, noidha, up' , 27, 385200, '7847017871');
+insert into customer values('clog6', 'Kieran Brady', '8takyloverforyob@yandx.icu', 15, 'a-45 udhyog nagar, chandighard, haryana' , 8, 365478, '7600363120');
+insert into customer values('clog7', 'Greta Mccallum', 'ulaithmud@forumedu.ru', 9, 'c-71 sardar estate, bird circle, jaipur, rajasthan' , 22, 365479, '7874516417');
+insert into customer values('clog8', 'Bertha Edmonds', '4sinaruto5h@bai5010.com', 16, 'A-45 wonderland, undera circle, blashpur, chhattisgarh' , 5, 364545, '8564795122');
+insert into customer values('clog9', 'Violet Villarreal', 'pkokopop@bbbb00000.info', 65, 'D-56 jodpurnagar, LNT circle, patna, bihar' , 4, 456785, '9856612487');
+insert into customer values('clog10', 'Duke Britt', 'lgiovanac@n5iny.us', 55, 'C-43 kashmainagri, havmour cicle, sinaga, Jambu and Kashmir' , 10, 978945, '9248754878');
+insert into customer values('clog11', 'Mari Gilbert', 'o8929939h@decography.ru', 45, 'A-76 patelnagar, dairy circle, ranchi, jharkhand' , 11, 578547, '9874564288');
+insert into customer values('clog12', 'Lillie-May Dougherty', 'cabde@online.ru', 29, 'A-54 satadhar society, bapod circle, amitsar, punjab' , 21, 364788, '7845886545');
+insert into customer values('clog13', 'Donald Gallagher', 'ehamza6@gikemart.site', 27, 'D-76 sai flats, uma charrasta, dehradun, uttrakhand' , 28, 395654, '8975461233');
+insert into customer values('clog14', 'Heath Walls', 'bkhaled@dobrychvirta.ru', 63, 'A-85 ganeshnagar, airport circle, kolkata, west bengal' , 29, 364777, '9856765124');
+insert into customer values('clog15', 'Isobelle Barnes', 'bluanaeduarda@vesti.ru', 85, 'D-98 Mahadev society, mahvir circle, bengaluru, karnataka' , 12, 364778, '9854328654');
+insert into customer values('clog16', 'Shannan Salter', 'bluanaeduarda@dedmoroz.ru', 22, 'A-09 Kaan society, devki circle, bhopal, madhya pradesh' , 14, 364779, '9875488756');
+insert into customer values('clog17', 'Christie Field', 'ssubi@doyouneedrenovation.net', 15, 'A-32 united society, varasia, tuli, nagaland ' , 19, 364789, '9578756865');
+insert into customer values('clog18', 'Zayna Rich', 'vnasraalrawig@abbonamenti.gratis', 26, 'D-8 amar society, iti circle, udaipur, tripura' , 26, 364787, '7854542663');
+insert into customer values('clog19', 'Akeem Richards', 'jhamma1919f@storageunits.app', 22, 'F-21 Akbar society, gai circle, chennai, tamil nadu' , 24, 336548, '8754631873');
+insert into customer values('clog20', 'Norah Bryan', 'ubatinsided@revzone.xyz', 67, 'A-44 ajit nagar society, dairyden circle, tenali, andhra pradesh' , 1, 6255754, '7458912365');
+
