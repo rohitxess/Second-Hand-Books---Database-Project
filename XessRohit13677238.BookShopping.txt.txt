@@ -3,7 +3,6 @@
 
 --NAME: ROHIT XESS
 --EMAIL: Rohit.Xess@student.uts.edu.au
---STUDENT NUMBER: 13677238
 
 --  This database is about the best selling books which can only be bought in India.
 
